@@ -79,7 +79,7 @@ contract RewardsController is RewardsDistributor, VersionedInitializable, IRewar
     onlyEmissionManager
   {
     for (uint256 i = 0; i < config.length; i++) {
-      // Get the current Scaled Total Supply of AToken or Debt token
+      // Get the current Scaled Total Supply of BToken or Debt token
       config[i].totalSupply = IScaledBalanceToken(config[i].asset).scaledTotalSupply();
 
       // Install TransferStrategy logic at IncentivesController

@@ -222,12 +222,12 @@ contract L2Encoder {
   }
 
   /**
-   * @notice Encodes repay with aToken parameters from standard input to compact representation of 1 bytes32
+   * @notice Encodes repay with bToken parameters from standard input to compact representation of 1 bytes32
    * @param asset The address of the borrowed underlying asset previously borrowed
    * @param amount The amount to repay
    * - Send the value type(uint256).max in order to repay the whole debt for `asset` on the specific `debtMode`
    * @param interestRateMode The interest rate mode at of the debt the user wants to repay: 1 for Stable, 2 for Variable
-   * @return compact representation of repay with aToken parameters
+   * @return compact representation of repay with bToken parameters
    */
   function encodeRepayWithATokensParams(
     address asset,
@@ -302,7 +302,7 @@ contract L2Encoder {
    * @param debtAsset The address of the underlying borrowed asset to be repaid with the liquidation
    * @param user The address of the borrower getting liquidated
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
-   * @param receiveAToken True if the liquidators wants to receive the collateral aTokens, `false` if he wants
+   * @param receiveAToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    * @return First half ot compact representation of liquidation call parameters
    * @return Second half ot compact representation of liquidation call parameters

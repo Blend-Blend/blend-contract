@@ -12,7 +12,7 @@ import {ConfiguratorInputTypes} from '../types/ConfiguratorInputTypes.sol';
 /**
  * @title ConfiguratorLogic library
  * @author Aave
- * @notice Implements the functions to initialize reserves and update aTokens and debtTokens
+ * @notice Implements the functions to initialize reserves and update bTokens and debtTokens
  */
 library ConfiguratorLogic {
   using ReserveConfiguration for DataTypes.ReserveConfigurationMap;
@@ -20,7 +20,7 @@ library ConfiguratorLogic {
   // See `IPoolConfigurator` for descriptions
   event ReserveInitialized(
     address indexed asset,
-    address indexed aToken,
+    address indexed bToken,
     address stableDebtToken,
     address variableDebtToken,
     address interestRateStrategyAddress
@@ -42,7 +42,7 @@ library ConfiguratorLogic {
   );
 
   /**
-   * @notice Initialize a reserve by creating and initializing aToken, stable debt token and variable debt token
+   * @notice Initialize a reserve by creating and initializing bToken, stable debt token and variable debt token
    * @dev Emits the `ReserveInitialized` event
    * @param pool The Pool in which the reserve will be initialized
    * @param input The needed parameters for the initialization
@@ -51,8 +51,8 @@ library ConfiguratorLogic {
     IPool pool,
     ConfiguratorInputTypes.InitReserveInput calldata input
   ) public {
-    address aTokenProxyAddress = _initTokenWithProxy(
-      input.aTokenImpl,
+    address bTokenProxyAddress = _initTokenWithProxy(
+      input.bTokenImpl,
       abi.encodeWithSelector(
         IInitializableAToken.initialize.selector,
         pool,
@@ -60,8 +60,8 @@ library ConfiguratorLogic {
         input.underlyingAsset,
         input.incentivesController,
         input.underlyingAssetDecimals,
-        input.aTokenName,
-        input.aTokenSymbol,
+        input.bTokenName,
+        input.bTokenSymbol,
         input.params
       )
     );
@@ -96,7 +96,7 @@ library ConfiguratorLogic {
 
     pool.initReserve(
       input.underlyingAsset,
-      aTokenProxyAddress,
+      bTokenProxyAddress,
       stableDebtTokenProxyAddress,
       variableDebtTokenProxyAddress,
       input.interestRateStrategyAddress
@@ -114,7 +114,7 @@ library ConfiguratorLogic {
 
     emit ReserveInitialized(
       input.underlyingAsset,
-      aTokenProxyAddress,
+      bTokenProxyAddress,
       stableDebtTokenProxyAddress,
       variableDebtTokenProxyAddress,
       input.interestRateStrategyAddress
@@ -122,9 +122,9 @@ library ConfiguratorLogic {
   }
 
   /**
-   * @notice Updates the aToken implementation and initializes it
+   * @notice Updates the bToken implementation and initializes it
    * @dev Emits the `ATokenUpgraded` event
-   * @param cachedPool The Pool containing the reserve with the aToken
+   * @param cachedPool The Pool containing the reserve with the bToken
    * @param input The parameters needed for the initialize call
    */
   function executeUpdateAToken(
@@ -147,9 +147,9 @@ library ConfiguratorLogic {
       input.params
     );
 
-    _upgradeTokenImplementation(reserveData.aTokenAddress, input.implementation, encodedCall);
+    _upgradeTokenImplementation(reserveData.bTokenAddress, input.implementation, encodedCall);
 
-    emit ATokenUpgraded(input.asset, reserveData.aTokenAddress, input.implementation);
+    emit ATokenUpgraded(input.asset, reserveData.bTokenAddress, input.implementation);
   }
 
   /**

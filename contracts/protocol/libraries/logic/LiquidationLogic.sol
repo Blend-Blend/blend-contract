@@ -206,7 +206,7 @@ library LiquidationLogic {
         liquidityIndex
       );
       uint256 scaledDownUserBalance = vars.collateralAToken.scaledBalanceOf(params.user);
-      // To avoid trying to send more aTokens than available on balance, due to 1 wei imprecision
+      // To avoid trying to send more bTokens than available on balance, due to 1 wei imprecision
       if (scaledDownLiquidationProtocolFee > scaledDownUserBalance) {
         vars.liquidationProtocolFeeAmount = scaledDownUserBalance.rayMul(liquidityIndex);
       }
@@ -217,14 +217,14 @@ library LiquidationLogic {
       );
     }
 
-    // Transfers the debt asset being repaid to the aToken, where the liquidity is kept
+    // Transfers the debt asset being repaid to the bToken, where the liquidity is kept
     IERC20(params.debtAsset).safeTransferFrom(
       msg.sender,
-      vars.debtReserveCache.aTokenAddress,
+      vars.debtReserveCache.bTokenAddress,
       vars.actualDebtToLiquidate
     );
 
-    IAToken(vars.debtReserveCache.aTokenAddress).handleRepayment(
+    IAToken(vars.debtReserveCache.bTokenAddress).handleRepayment(
       msg.sender,
       params.user,
       vars.actualDebtToLiquidate
@@ -242,7 +242,7 @@ library LiquidationLogic {
   }
 
   /**
-   * @notice Burns the collateral aTokens and transfers the underlying to the liquidator.
+   * @notice Burns the collateral bTokens and transfers the underlying to the liquidator.
    * @dev   The function also updates the state and the interest rate of the collateral reserve.
    * @param collateralReserve The data of the collateral reserve
    * @param params The additional parameters needed to execute the liquidation function
@@ -262,7 +262,7 @@ library LiquidationLogic {
       vars.actualCollateralToLiquidate
     );
 
-    // Burn the equivalent amount of aToken, sending the underlying to the liquidator
+    // Burn the equivalent amount of bToken, sending the underlying to the liquidator
     vars.collateralAToken.burn(
       params.user,
       msg.sender,
@@ -272,8 +272,8 @@ library LiquidationLogic {
   }
 
   /**
-   * @notice Liquidates the user aTokens by transferring them to the liquidator.
-   * @dev   The function also checks the state of the liquidator and activates the aToken as collateral
+   * @notice Liquidates the user bTokens by transferring them to the liquidator.
+   * @dev   The function also checks the state of the liquidator and activates the bToken as collateral
    *        as in standard transfers if the isolation mode constraints are respected.
    * @param reservesData The state of all the reserves
    * @param reservesList The addresses of all the active reserves
@@ -305,7 +305,7 @@ library LiquidationLogic {
           reservesList,
           liquidatorConfig,
           collateralReserve.configuration,
-          collateralReserve.aTokenAddress
+          collateralReserve.bTokenAddress
         )
       ) {
         liquidatorConfig.setUsingAsCollateral(collateralReserve.id, true);
@@ -390,7 +390,7 @@ library LiquidationLogic {
    * @param eModeCategories The configuration of all the efficiency mode categories
    * @param collateralReserve The data of the collateral reserve
    * @param params The additional parameters needed to execute the liquidation function
-   * @return The collateral aToken
+   * @return The collateral bToken
    * @return The address to use as price source for the collateral
    * @return The address to use as price source for the debt
    * @return The liquidation bonus to apply to the collateral
@@ -400,7 +400,7 @@ library LiquidationLogic {
     DataTypes.ReserveData storage collateralReserve,
     DataTypes.ExecuteLiquidationCallParams memory params
   ) internal view returns (IAToken, address, address, uint256) {
-    IAToken collateralAToken = IAToken(collateralReserve.aTokenAddress);
+    IAToken collateralAToken = IAToken(collateralReserve.bTokenAddress);
     uint256 liquidationBonus = collateralReserve.configuration.getLiquidationBonus();
 
     address collateralPriceSource = params.collateralAsset;

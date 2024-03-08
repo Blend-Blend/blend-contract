@@ -1,28 +1,55 @@
+import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
-import 'hardhat-contract-sizer';
-import "hardhat-dependency-compiler";
-import "@nomicfoundation/hardhat-chai-matchers";
-import "@nomiclabs/hardhat-etherscan";
-
-const DEFAULT_BLOCK_GAS_LIMIT = 12450000;
-const HARDFORK = 'london';
 
 const config: HardhatUserConfig = {
-  gasReporter: {
-    enabled: true,
-  },
   solidity: {
-    // Docs for the compiler https://docs.soliditylang.org/en/v0.8.10/using-the-compiler.html
-    version: '0.8.10',
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 100000,
+    compilers: [
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200
+          }
+        }
       },
-      evmVersion: 'london',
+    ]
+  },
+  networks: {
+    hardhat: {
+      allowUnlimitedContractSize: true,
     },
+    merlinTestnet: {
+      url: `https://testnet-rpc.merlinchain.io`,
+      accounts: [process.env.PRIVATE_KEY || ""],
+    },
+    goerli: {
+      url: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+      accounts: [process.env.PRIVATE_KEY || ""],
+      gas: 5000000,
+    },
+    sepolia: {
+      url: "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+      accounts: [process.env.PRIVATE_KEY || ""],
+      gas: 5000000,
+    },
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0,
+    },
+    bob: { default: 1 },
+    alice: { default: 2 },
+    sam: { default: 3 },
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD",
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
   mocha: {
     timeout: 0,

@@ -150,7 +150,7 @@ library BorrowLogic {
     );
 
     if (params.releaseUnderlying) {
-      IAToken(reserveCache.aTokenAddress).transferUnderlyingTo(params.user, params.amount);
+      IAToken(reserveCache.bTokenAddress).transferUnderlyingTo(params.user, params.amount);
     }
 
     emit Borrow(
@@ -167,7 +167,7 @@ library BorrowLogic {
   }
 
   /**
-   * @notice Implements the repay feature. Repaying transfers the underlying back to the aToken and clears the
+   * @notice Implements the repay feature. Repaying transfers the underlying back to the bToken and clears the
    * equivalent amount of debt for the user by burning the corresponding debt token. For isolated positions, it also
    * reduces the isolated debt.
    * @dev  Emits the `Repay()` event
@@ -205,9 +205,9 @@ library BorrowLogic {
       ? stableDebt
       : variableDebt;
 
-    // Allows a user to repay with aTokens without leaving dust from interest.
+    // Allows a user to repay with bTokens without leaving dust from interest.
     if (params.useATokens && params.amount == type(uint256).max) {
-      params.amount = IAToken(reserveCache.aTokenAddress).balanceOf(msg.sender);
+      params.amount = IAToken(reserveCache.bTokenAddress).balanceOf(msg.sender);
     }
 
     if (params.amount < paybackAmount) {
@@ -244,15 +244,15 @@ library BorrowLogic {
     );
 
     if (params.useATokens) {
-      IAToken(reserveCache.aTokenAddress).burn(
+      IAToken(reserveCache.bTokenAddress).burn(
         msg.sender,
-        reserveCache.aTokenAddress,
+        reserveCache.bTokenAddress,
         paybackAmount,
         reserveCache.nextLiquidityIndex
       );
     } else {
-      IERC20(params.asset).safeTransferFrom(msg.sender, reserveCache.aTokenAddress, paybackAmount);
-      IAToken(reserveCache.aTokenAddress).handleRepayment(
+      IERC20(params.asset).safeTransferFrom(msg.sender, reserveCache.bTokenAddress, paybackAmount);
+      IAToken(reserveCache.bTokenAddress).handleRepayment(
         msg.sender,
         params.onBehalfOf,
         paybackAmount

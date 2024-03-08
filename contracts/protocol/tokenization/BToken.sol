@@ -8,19 +8,19 @@ import {VersionedInitializable} from '../libraries/aave-upgradeability/Versioned
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {IPool} from '../../interfaces/IPool.sol';
-import {IAToken} from '../../interfaces/IAToken.sol';
+import {IBToken} from '../../interfaces/IBToken.sol';
 import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
-import {IInitializableAToken} from '../../interfaces/IInitializableAToken.sol';
+import {IInitializableBToken} from '../../interfaces/IInitializableBToken.sol';
 import {ScaledBalanceTokenBase} from './base/ScaledBalanceTokenBase.sol';
 import {IncentivizedERC20} from './base/IncentivizedERC20.sol';
 import {EIP712Base} from './base/EIP712Base.sol';
 
 /**
- * @title Aave ERC20 AToken
+ * @title Aave ERC20 BToken
  * @author Aave
  * @notice Implementation of the interest bearing token for the Aave protocol
  */
-contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, IAToken {
+contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, IBToken {
   using WadRayMath for uint256;
   using SafeCast for uint256;
   using GPv2SafeERC20 for IERC20;
@@ -48,7 +48,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     // Intentionally left blank
   }
 
-  /// @inheritdoc IInitializableAToken
+  /// @inheritdoc IInitializableBToken
   function initialize(
     IPool initializingPool,
     address treasury,
@@ -82,7 +82,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     );
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function mint(
     address caller,
     address onBehalfOf,
@@ -92,7 +92,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     return _mintScaled(caller, onBehalfOf, amount, index);
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function burn(
     address from,
     address receiverOfUnderlying,
@@ -105,7 +105,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     }
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function mintToTreasury(uint256 amount, uint256 index) external virtual override onlyPool {
     if (amount == 0) {
       return;
@@ -113,7 +113,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     _mintScaled(address(POOL), _treasury, amount, index);
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function transferOnLiquidation(
     address from,
     address to,
@@ -142,22 +142,22 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     return currentSupplyScaled.rayMul(POOL.getReserveNormalizedIncome(_underlyingAsset));
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function RESERVE_TREASURY_ADDRESS() external view override returns (address) {
     return _treasury;
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function UNDERLYING_ASSET_ADDRESS() external view override returns (address) {
     return _underlyingAsset;
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function transferUnderlyingTo(address target, uint256 amount) external virtual override onlyPool {
     IERC20(_underlyingAsset).safeTransfer(target, amount);
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function handleRepayment(
     address user,
     address onBehalfOf,
@@ -166,7 +166,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     // Intentionally left blank
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function permit(
     address owner,
     address spender,
@@ -228,18 +228,18 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
   }
 
   /**
-   * @dev Overrides the base function to fully implement IAToken
+   * @dev Overrides the base function to fully implement IBToken
    * @dev see `EIP712Base.DOMAIN_SEPARATOR()` for more detailed documentation
    */
-  function DOMAIN_SEPARATOR() public view override(IAToken, EIP712Base) returns (bytes32) {
+  function DOMAIN_SEPARATOR() public view override(IBToken, EIP712Base) returns (bytes32) {
     return super.DOMAIN_SEPARATOR();
   }
 
   /**
-   * @dev Overrides the base function to fully implement IAToken
+   * @dev Overrides the base function to fully implement IBToken
    * @dev see `EIP712Base.nonces()` for more detailed documentation
    */
-  function nonces(address owner) public view override(IAToken, EIP712Base) returns (uint256) {
+  function nonces(address owner) public view override(IBToken, EIP712Base) returns (uint256) {
     return super.nonces(owner);
   }
 
@@ -248,7 +248,7 @@ contract AToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     return name();
   }
 
-  /// @inheritdoc IAToken
+  /// @inheritdoc IBToken
   function rescueTokens(address token, address to, uint256 amount) external override onlyPoolAdmin {
     require(token != _underlyingAsset, Errors.UNDERLYING_CANNOT_BE_RESCUED);
     IERC20(token).safeTransfer(to, amount);

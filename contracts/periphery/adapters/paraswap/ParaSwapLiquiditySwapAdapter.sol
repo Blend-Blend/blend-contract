@@ -107,19 +107,19 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     IParaSwapAugustus augustus,
     PermitSignature calldata permitParams
   ) external nonReentrant {
-    IERC20WithPermit aToken = IERC20WithPermit(
-      _getReserveData(address(assetToSwapFrom)).aTokenAddress
+    IERC20WithPermit bToken = IERC20WithPermit(
+      _getReserveData(address(assetToSwapFrom)).bTokenAddress
     );
 
     if (swapAllBalanceOffset != 0) {
-      uint256 balance = aToken.balanceOf(msg.sender);
+      uint256 balance = bToken.balanceOf(msg.sender);
       require(balance <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
       amountToSwap = balance;
     }
 
     _pullATokenAndWithdraw(
       address(assetToSwapFrom),
-      aToken,
+      bToken,
       msg.sender,
       amountToSwap,
       permitParams
@@ -165,12 +165,12 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     IERC20Detailed assetToSwapTo,
     uint256 minAmountToReceive
   ) internal {
-    IERC20WithPermit aToken = IERC20WithPermit(
-      _getReserveData(address(assetToSwapFrom)).aTokenAddress
+    IERC20WithPermit bToken = IERC20WithPermit(
+      _getReserveData(address(assetToSwapFrom)).bTokenAddress
     );
     uint256 amountToSwap = flashLoanAmount;
 
-    uint256 balance = aToken.balanceOf(initiator);
+    uint256 balance = bToken.balanceOf(initiator);
     if (swapAllBalanceOffset != 0) {
       uint256 balanceToSwap = balance.sub(premium);
       require(balanceToSwap <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
@@ -195,7 +195,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
 
     _pullATokenAndWithdraw(
       address(assetToSwapFrom),
-      aToken,
+      bToken,
       initiator,
       amountToSwap.add(premium),
       permitParams
