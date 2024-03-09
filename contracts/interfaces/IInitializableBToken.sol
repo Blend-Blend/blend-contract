@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.0;
 
-import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
+import {IIncentivesController} from './IIncentivesController.sol';
 import {IPool} from './IPool.sol';
 
 /**
@@ -47,7 +47,7 @@ interface IInitializableBToken {
     IPool pool,
     address treasury,
     address underlyingAsset,
-    IAaveIncentivesController incentivesController,
+    IIncentivesController incentivesController,
     uint8 bTokenDecimals,
     string calldata bTokenName,
     string calldata bTokenSymbol,

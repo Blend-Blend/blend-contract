@@ -7,7 +7,7 @@ import {IERC20Detailed} from '../../../dependencies/openzeppelin/contracts/IERC2
 import {SafeCast} from '../../../dependencies/openzeppelin/contracts/SafeCast.sol';
 import {WadRayMath} from '../../libraries/math/WadRayMath.sol';
 import {Errors} from '../../libraries/helpers/Errors.sol';
-import {IAaveIncentivesController} from '../../../interfaces/IAaveIncentivesController.sol';
+import {IIncentivesController} from '../../../interfaces/IIncentivesController.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
 import {IPool} from '../../../interfaces/IPool.sol';
 import {IACLManager} from '../../../interfaces/IACLManager.sol';
@@ -58,7 +58,7 @@ abstract contract IncentivizedERC20 is Context, IERC20Detailed {
   string private _name;
   string private _symbol;
   uint8 private _decimals;
-  IAaveIncentivesController internal _incentivesController;
+  IIncentivesController internal _incentivesController;
   IPoolAddressesProvider internal immutable _addressesProvider;
   IPool public immutable POOL;
 
@@ -106,7 +106,7 @@ abstract contract IncentivizedERC20 is Context, IERC20Detailed {
    * @notice Returns the address of the Incentives Controller contract
    * @return The address of the Incentives Controller
    */
-  function getIncentivesController() external view virtual returns (IAaveIncentivesController) {
+  function getIncentivesController() external view virtual returns (IIncentivesController) {
     return _incentivesController;
   }
 
@@ -114,7 +114,7 @@ abstract contract IncentivizedERC20 is Context, IERC20Detailed {
    * @notice Sets a new Incentives Controller
    * @param controller the new Incentives controller
    */
-  function setIncentivesController(IAaveIncentivesController controller) external onlyPoolAdmin {
+  function setIncentivesController(IIncentivesController controller) external onlyPoolAdmin {
     _incentivesController = controller;
   }
 
@@ -188,7 +188,7 @@ abstract contract IncentivizedERC20 is Context, IERC20Detailed {
     uint128 oldRecipientBalance = _userState[recipient].balance;
     _userState[recipient].balance = oldRecipientBalance + amount;
 
-    IAaveIncentivesController incentivesControllerLocal = _incentivesController;
+    IIncentivesController incentivesControllerLocal = _incentivesController;
     if (address(incentivesControllerLocal) != address(0)) {
       uint256 currentTotalSupply = _totalSupply;
       incentivesControllerLocal.handleAction(sender, currentTotalSupply, oldSenderBalance);

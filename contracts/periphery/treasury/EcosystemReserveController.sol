@@ -4,10 +4,10 @@ pragma solidity ^0.8.10;
 import {Ownable} from '../../dependencies/openzeppelin/contracts/Ownable.sol';
 import {IStreamable} from './interfaces/IStreamable.sol';
 import {IAdminControlledEcosystemReserve} from './interfaces/IAdminControlledEcosystemReserve.sol';
-import {IAaveEcosystemReserveController} from './interfaces/IAaveEcosystemReserveController.sol';
+import {IEcosystemReserveController} from './interfaces/IEcosystemReserveController.sol';
 import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
 
-contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveController {
+contract EcosystemReserveController is Ownable, IEcosystemReserveController {
   /**
    * @notice Constructor.
    * @param aaveGovShortTimelock The address of the Aave's governance executor, owning this contract
@@ -16,7 +16,7 @@ contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveControl
     transferOwnership(aaveGovShortTimelock);
   }
 
-  /// @inheritdoc IAaveEcosystemReserveController
+  /// @inheritdoc IEcosystemReserveController
   function approve(
     address collector,
     IERC20 token,
@@ -26,7 +26,7 @@ contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveControl
     IAdminControlledEcosystemReserve(collector).approve(token, recipient, amount);
   }
 
-  /// @inheritdoc IAaveEcosystemReserveController
+  /// @inheritdoc IEcosystemReserveController
   function transfer(
     address collector,
     IERC20 token,
@@ -36,7 +36,7 @@ contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveControl
     IAdminControlledEcosystemReserve(collector).transfer(token, recipient, amount);
   }
 
-  /// @inheritdoc IAaveEcosystemReserveController
+  /// @inheritdoc IEcosystemReserveController
   function createStream(
     address collector,
     address recipient,
@@ -55,7 +55,7 @@ contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveControl
       );
   }
 
-  /// @inheritdoc IAaveEcosystemReserveController
+  /// @inheritdoc IEcosystemReserveController
   function withdrawFromStream(
     address collector,
     uint256 streamId,
@@ -64,7 +64,7 @@ contract AaveEcosystemReserveController is Ownable, IAaveEcosystemReserveControl
     return IStreamable(collector).withdrawFromStream(streamId, funds);
   }
 
-  /// @inheritdoc IAaveEcosystemReserveController
+  /// @inheritdoc IEcosystemReserveController
   function cancelStream(address collector, uint256 streamId) external onlyOwner returns (bool) {
     return IStreamable(collector).cancelStream(streamId);
   }

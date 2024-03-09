@@ -19,7 +19,7 @@ import {SafeERC20} from './libs/SafeERC20.sol';
  * - Same as with creation, on Sablier the `sender` and `recipient` can cancel a stream. Here, only fund admin and recipient
  * @author BGD Labs
  **/
-contract AaveEcosystemReserveV2 is AdminControlledEcosystemReserve, ReentrancyGuard, IStreamable {
+contract EcosystemReserveV2 is AdminControlledEcosystemReserve, ReentrancyGuard, IStreamable {
   using SafeERC20 for IERC20;
 
   /*** Storage Properties ***/

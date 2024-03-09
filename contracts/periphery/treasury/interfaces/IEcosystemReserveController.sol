@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 import {IERC20} from '../../../dependencies/openzeppelin/contracts/IERC20.sol';
 
-interface IAaveEcosystemReserveController {
+interface IEcosystemReserveController {
   /**
    * @notice Proxy function for ERC20's approve(), pointing to a specific collector contract
    * @param collector The collector contract with funds (Aave ecosystem reserve)
