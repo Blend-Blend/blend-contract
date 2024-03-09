@@ -233,9 +233,4 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
 };
 export default deployFunction;
 deployFunction.tags = ["core"];
-if (hre.network.name == "hardhat") {
-  deployFunction.dependencies = ["mocks", "libs"];
-} else {
-  deployFunction.dependencies = ["libs"];
-}
-// deployFunction.dependencies = ["libs"];
+deployFunction.dependencies = ["mocks", "libs"];

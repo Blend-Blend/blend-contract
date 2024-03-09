@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 import {IRewardsController} from '../rewards/interfaces/IRewardsController.sol';
 
-contract ATokenMock {
+contract BTokenMock {
   IRewardsController public _aic;
   uint256 internal _userBalance;
   uint256 internal _totalSupply;

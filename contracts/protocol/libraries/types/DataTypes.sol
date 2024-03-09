@@ -110,7 +110,7 @@ library DataTypes {
     address collateralAsset;
     address debtAsset;
     address user;
-    bool receiveAToken;
+    bool receiveBToken;
     address priceOracle;
     uint8 userEModeCategory;
     address priceOracleSentinel;
@@ -143,7 +143,7 @@ library DataTypes {
     uint256 amount;
     InterestRateMode interestRateMode;
     address onBehalfOf;
-    bool useATokens;
+    bool useBTokens;
   }
 
   struct ExecuteWithdrawParams {

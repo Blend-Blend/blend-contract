@@ -33,7 +33,7 @@ interface IUiIncentiveDataProviderV3 {
 
   struct UserReserveIncentiveData {
     address underlyingAsset;
-    UserIncentiveData aTokenIncentivesUserData;
+    UserIncentiveData bTokenIncentivesUserData;
     UserIncentiveData vTokenIncentivesUserData;
     UserIncentiveData sTokenIncentivesUserData;
   }

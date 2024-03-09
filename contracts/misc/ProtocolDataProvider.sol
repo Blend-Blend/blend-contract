@@ -59,18 +59,18 @@ contract ProtocolDataProvider is IPoolDataProvider {
   }
 
   /// @inheritdoc IPoolDataProvider
-  function getAllATokens() external view override returns (TokenData[] memory) {
+  function getAllBTokens() external view override returns (TokenData[] memory) {
     IPool pool = IPool(ADDRESSES_PROVIDER.getPool());
     address[] memory reserves = pool.getReservesList();
-    TokenData[] memory aTokens = new TokenData[](reserves.length);
+    TokenData[] memory bTokens = new TokenData[](reserves.length);
     for (uint256 i = 0; i < reserves.length; i++) {
       DataTypes.ReserveData memory reserveData = pool.getReserveData(reserves[i]);
-      aTokens[i] = TokenData({
-        symbol: IERC20Detailed(reserveData.aTokenAddress).symbol(),
-        tokenAddress: reserveData.aTokenAddress
+      bTokens[i] = TokenData({
+        symbol: IERC20Detailed(reserveData.bTokenAddress).symbol(),
+        tokenAddress: reserveData.bTokenAddress
       });
     }
-    return aTokens;
+    return bTokens;
   }
 
   /// @inheritdoc IPoolDataProvider
@@ -158,7 +158,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     returns (
       uint256 unbacked,
       uint256 accruedToTreasuryScaled,
-      uint256 totalAToken,
+      uint256 totalBToken,
       uint256 totalStableDebt,
       uint256 totalVariableDebt,
       uint256 liquidityRate,
@@ -177,7 +177,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     return (
       reserve.unbacked,
       reserve.accruedToTreasury,
-      IERC20Detailed(reserve.aTokenAddress).totalSupply(),
+      IERC20Detailed(reserve.bTokenAddress).totalSupply(),
       IERC20Detailed(reserve.stableDebtTokenAddress).totalSupply(),
       IERC20Detailed(reserve.variableDebtTokenAddress).totalSupply(),
       reserve.currentLiquidityRate,
@@ -191,11 +191,11 @@ contract ProtocolDataProvider is IPoolDataProvider {
   }
 
   /// @inheritdoc IPoolDataProvider
-  function getATokenTotalSupply(address asset) external view override returns (uint256) {
+  function getBTokenTotalSupply(address asset) external view override returns (uint256) {
     DataTypes.ReserveData memory reserve = IPool(ADDRESSES_PROVIDER.getPool()).getReserveData(
       asset
     );
-    return IERC20Detailed(reserve.aTokenAddress).totalSupply();
+    return IERC20Detailed(reserve.bTokenAddress).totalSupply();
   }
 
   /// @inheritdoc IPoolDataProvider
@@ -217,7 +217,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     view
     override
     returns (
-      uint256 currentATokenBalance,
+      uint256 currentBTokenBalance,
       uint256 currentStableDebt,
       uint256 currentVariableDebt,
       uint256 principalStableDebt,
@@ -235,7 +235,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     DataTypes.UserConfigurationMap memory userConfig = IPool(ADDRESSES_PROVIDER.getPool())
       .getUserConfiguration(user);
 
-    currentATokenBalance = IERC20Detailed(reserve.aTokenAddress).balanceOf(user);
+    currentBTokenBalance = IERC20Detailed(reserve.bTokenAddress).balanceOf(user);
     currentVariableDebt = IERC20Detailed(reserve.variableDebtTokenAddress).balanceOf(user);
     currentStableDebt = IERC20Detailed(reserve.stableDebtTokenAddress).balanceOf(user);
     principalStableDebt = IStableDebtToken(reserve.stableDebtTokenAddress).principalBalanceOf(user);
@@ -256,7 +256,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     view
     override
     returns (
-      address aTokenAddress,
+      address bTokenAddress,
       address stableDebtTokenAddress,
       address variableDebtTokenAddress
     )
@@ -266,7 +266,7 @@ contract ProtocolDataProvider is IPoolDataProvider {
     );
 
     return (
-      reserve.aTokenAddress,
+      reserve.bTokenAddress,
       reserve.stableDebtTokenAddress,
       reserve.variableDebtTokenAddress
     );

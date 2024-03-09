@@ -29,7 +29,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
   /**
    * @dev Swaps the received reserve amount from the flash loan into the asset specified in the params.
    * The received funds from the swap are then deposited into the protocol on behalf of the user.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset and repay the flash loan.
+   * The user should give this contract allowance to pull the BTokens in order to withdraw the underlying asset and repay the flash loan.
    * @param asset The address of the flash-borrowed asset
    * @param amount The amount of the flash-borrowed asset
    * @param premium The fee of the flash-borrowed asset
@@ -87,7 +87,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
   /**
    * @dev Swaps an amount of an asset to another and deposits the new asset amount on behalf of the user without using a flash loan.
    * This method can be used when the temporary transfer of the collateral asset to this contract does not affect the user position.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset and perform the swap.
+   * The user should give this contract allowance to pull the BTokens in order to withdraw the underlying asset and perform the swap.
    * @param assetToSwapFrom Address of the underlying asset to be swapped from
    * @param assetToSwapTo Address of the underlying asset to be swapped to and deposited
    * @param amountToSwap Amount to be swapped, or maximum amount when swapping all balance
@@ -117,7 +117,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
       amountToSwap = balance;
     }
 
-    _pullATokenAndWithdraw(
+    _pullBTokenAndWithdraw(
       address(assetToSwapFrom),
       bToken,
       msg.sender,
@@ -176,7 +176,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
       require(balanceToSwap <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
       amountToSwap = balanceToSwap;
     } else {
-      require(balance >= amountToSwap.add(premium), 'INSUFFICIENT_ATOKEN_BALANCE');
+      require(balance >= amountToSwap.add(premium), 'INSUFFICIENT_BTOKEN_BALANCE');
     }
 
     uint256 amountReceived = _sellOnParaSwap(
@@ -193,7 +193,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     assetToSwapTo.approve(address(POOL), amountReceived);
     POOL.deposit(address(assetToSwapTo), amountReceived, initiator, 0);
 
-    _pullATokenAndWithdraw(
+    _pullBTokenAndWithdraw(
       address(assetToSwapFrom),
       bToken,
       initiator,

@@ -87,14 +87,14 @@ interface IPool {
    * @param user The beneficiary of the repayment, getting his debt reduced
    * @param repayer The address of the user initiating the repay(), providing the funds
    * @param amount The amount repaid
-   * @param useATokens True if the repayment is done using bTokens, `false` if done with underlying asset directly
+   * @param useBTokens True if the repayment is done using bTokens, `false` if done with underlying asset directly
    */
   event Repay(
     address indexed reserve,
     address indexed user,
     address indexed repayer,
     uint256 amount,
-    bool useATokens
+    bool useBTokens
   );
 
   /**
@@ -172,7 +172,7 @@ interface IPool {
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
    * @param liquidatedCollateralAmount The amount of collateral received by the liquidator
    * @param liquidator The address of the liquidator
-   * @param receiveAToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
+   * @param receiveBToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    */
   event LiquidationCall(
@@ -182,7 +182,7 @@ interface IPool {
     uint256 debtToCover,
     uint256 liquidatedCollateralAmount,
     address liquidator,
-    bool receiveAToken
+    bool receiveBToken
   );
 
   /**
@@ -367,7 +367,7 @@ interface IPool {
    * @param interestRateMode The interest rate mode at of the debt the user wants to repay: 1 for Stable, 2 for Variable
    * @return The final amount repaid
    */
-  function repayWithATokens(
+  function repayWithBTokens(
     address asset,
     uint256 amount,
     uint256 interestRateMode
@@ -406,7 +406,7 @@ interface IPool {
    * @param debtAsset The address of the underlying borrowed asset to be repaid with the liquidation
    * @param user The address of the borrower getting liquidated
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
-   * @param receiveAToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
+   * @param receiveBToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    */
   function liquidationCall(
@@ -414,7 +414,7 @@ interface IPool {
     address debtAsset,
     address user,
     uint256 debtToCover,
-    bool receiveAToken
+    bool receiveBToken
   ) external;
 
   /**

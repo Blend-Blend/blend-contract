@@ -39,7 +39,7 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
   /**
    * @dev Uses the received funds from the flash loan to repay a debt on the protocol on behalf of the user. Then pulls
    * the collateral from the user and swaps it to the debt asset to repay the flash loan.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset, swap it
+   * The user should give this contract allowance to pull the BTokens in order to withdraw the underlying asset, swap it
    * and repay the flash loan.
    * Supports only one asset on the flash loan.
    * @param asset The address of the flash-borrowed asset
@@ -81,7 +81,7 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
    * @dev Swaps the user collateral for the debt asset and then repay the debt on the protocol on behalf of the user
    * without using flash loans. This method can be used when the temporary transfer of the collateral asset to this
    * contract does not affect the user position.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset
+   * The user should give this contract allowance to pull the BTokens in order to withdraw the underlying asset
    * @param collateralAsset Address of asset to be swapped
    * @param debtAsset Address of debt asset
    * @param collateralAmount max Amount of the collateral to be swapped
@@ -109,8 +109,8 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
       msg.sender
     );
 
-    // Pull aTokens from user
-    _pullATokenAndWithdraw(address(collateralAsset), msg.sender, collateralAmount, permitSignature);
+    // Pull bTokens from user
+    _pullBTokenAndWithdraw(address(collateralAsset), msg.sender, collateralAmount, permitSignature);
     //buy debt asset using collateral asset
     uint256 amountSold = _buyOnParaSwap(
       buyAllBalanceOffset,
@@ -184,8 +184,8 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
 
     uint256 neededForFlashLoanRepay = amountSold.add(premium);
 
-    // Pull aTokens from user
-    _pullATokenAndWithdraw(
+    // Pull bTokens from user
+    _pullBTokenAndWithdraw(
       address(collateralAsset),
       initiator,
       neededForFlashLoanRepay,

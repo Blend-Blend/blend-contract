@@ -28,14 +28,14 @@ contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
   bytes32 public constant PERMIT_TYPEHASH =
     keccak256('Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)');
 
-  uint256 public constant ATOKEN_REVISION = 0x1;
+  uint256 public constant BTOKEN_REVISION = 0x1;
 
   address internal _treasury;
   address internal _underlyingAsset;
 
   /// @inheritdoc VersionedInitializable
   function getRevision() internal pure virtual override returns (uint256) {
-    return ATOKEN_REVISION;
+    return BTOKEN_REVISION;
   }
 
   /**
@@ -44,7 +44,7 @@ contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
    */
   constructor(
     IPool pool
-  ) ScaledBalanceTokenBase(pool, 'ATOKEN_IMPL', 'ATOKEN_IMPL', 0) EIP712Base() {
+  ) ScaledBalanceTokenBase(pool, 'BTOKEN_IMPL', 'BTOKEN_IMPL', 0) EIP712Base() {
     // Intentionally left blank
   }
 
@@ -54,15 +54,15 @@ contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
     address treasury,
     address underlyingAsset,
     IIncentivesController incentivesController,
-    uint8 aTokenDecimals,
-    string calldata aTokenName,
-    string calldata aTokenSymbol,
+    uint8 bTokenDecimals,
+    string calldata bTokenName,
+    string calldata bTokenSymbol,
     bytes calldata params
   ) public virtual override initializer {
     require(initializingPool == POOL, Errors.POOL_ADDRESSES_DO_NOT_MATCH);
-    _setName(aTokenName);
-    _setSymbol(aTokenSymbol);
-    _setDecimals(aTokenDecimals);
+    _setName(bTokenName);
+    _setSymbol(bTokenSymbol);
+    _setDecimals(bTokenDecimals);
 
     _treasury = treasury;
     _underlyingAsset = underlyingAsset;
@@ -75,9 +75,9 @@ contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
       address(POOL),
       treasury,
       address(incentivesController),
-      aTokenDecimals,
-      aTokenName,
-      aTokenSymbol,
+      bTokenDecimals,
+      bTokenName,
+      bTokenSymbol,
       params
     );
   }
@@ -193,7 +193,7 @@ contract BToken is VersionedInitializable, ScaledBalanceTokenBase, EIP712Base, I
   }
 
   /**
-   * @notice Transfers the aTokens between two users. Validates the transfer
+   * @notice Transfers the bTokens between two users. Validates the transfer
    * (ie checks for valid HF after the transfer) if required
    * @param from The source address
    * @param to The destination address

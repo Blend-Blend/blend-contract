@@ -8,7 +8,7 @@ import {IReserveInterestRateStrategy} from '../../../interfaces/IReserveInterest
 import {IStableDebtToken} from '../../../interfaces/IStableDebtToken.sol';
 import {IScaledBalanceToken} from '../../../interfaces/IScaledBalanceToken.sol';
 import {IPriceOracleGetter} from '../../../interfaces/IPriceOracleGetter.sol';
-import {IAToken} from '../../../interfaces/IAToken.sol';
+import {IBToken} from '../../../interfaces/IBToken.sol';
 import {IPriceOracleSentinel} from '../../../interfaces/IPriceOracleSentinel.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
 import {IAccessControl} from '../../../dependencies/openzeppelin/contracts/IAccessControl.sol';
@@ -80,7 +80,7 @@ library ValidationLogic {
     uint256 supplyCap = reserveCache.reserveConfiguration.getSupplyCap();
     require(
       supplyCap == 0 ||
-        ((IAToken(reserveCache.bTokenAddress).scaledTotalSupply() +
+        ((IBToken(reserveCache.bTokenAddress).scaledTotalSupply() +
           uint256(reserve.accruedToTreasury)).rayMul(reserveCache.nextLiquidityIndex) + amount) <=
         supplyCap * (10 ** reserveCache.reserveConfiguration.getDecimals()),
       Errors.SUPPLY_CAP_EXCEEDED

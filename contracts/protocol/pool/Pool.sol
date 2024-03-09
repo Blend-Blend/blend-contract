@@ -262,7 +262,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
           amount: amount,
           interestRateMode: DataTypes.InterestRateMode(interestRateMode),
           onBehalfOf: onBehalfOf,
-          useATokens: false
+          useBTokens: false
         })
       );
   }
@@ -295,14 +295,14 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
         amount: amount,
         interestRateMode: DataTypes.InterestRateMode(interestRateMode),
         onBehalfOf: onBehalfOf,
-        useATokens: false
+        useBTokens: false
       });
       return BorrowLogic.executeRepay(_reserves, _reservesList, _usersConfig[onBehalfOf], params);
     }
   }
 
   /// @inheritdoc IPool
-  function repayWithATokens(
+  function repayWithBTokens(
     address asset,
     uint256 amount,
     uint256 interestRateMode
@@ -317,7 +317,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
           amount: amount,
           interestRateMode: DataTypes.InterestRateMode(interestRateMode),
           onBehalfOf: msg.sender,
-          useATokens: true
+          useBTokens: true
         })
       );
   }
@@ -361,7 +361,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
     address debtAsset,
     address user,
     uint256 debtToCover,
-    bool receiveAToken
+    bool receiveBToken
   ) public virtual override {
     LiquidationLogic.executeLiquidationCall(
       _reserves,
@@ -374,7 +374,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
         collateralAsset: collateralAsset,
         debtAsset: debtAsset,
         user: user,
-        receiveAToken: receiveAToken,
+        receiveBToken: receiveBToken,
         priceOracle: ADDRESSES_PROVIDER.getPriceOracle(),
         userEModeCategory: _usersEModeCategory[user],
         priceOracleSentinel: ADDRESSES_PROVIDER.getPriceOracleSentinel()
@@ -572,7 +572,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
     uint256 balanceFromBefore,
     uint256 balanceToBefore
   ) external virtual override {
-    require(msg.sender == _reserves[asset].aTokenAddress, Errors.CALLER_NOT_ATOKEN);
+    require(msg.sender == _reserves[asset].bTokenAddress, Errors.CALLER_NOT_BTOKEN);
     SupplyLogic.executeFinalizeTransfer(
       _reserves,
       _reservesList,
@@ -595,7 +595,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
   /// @inheritdoc IPool
   function initReserve(
     address asset,
-    address aTokenAddress,
+    address bTokenAddress,
     address stableDebtAddress,
     address variableDebtAddress,
     address interestRateStrategyAddress
@@ -606,7 +606,7 @@ contract Pool is VersionedInitializable, PoolStorage, IPool {
         _reservesList,
         DataTypes.InitReserveParams({
           asset: asset,
-          aTokenAddress: aTokenAddress,
+          bTokenAddress: bTokenAddress,
           stableDebtAddress: stableDebtAddress,
           variableDebtAddress: variableDebtAddress,
           interestRateStrategyAddress: interestRateStrategyAddress,

@@ -4,6 +4,8 @@
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@types/bluebird": "^3.5.42",
+    "bluebird": "^3.7.2",
     "dotenv": "^16.4.5",
     "hardhat-deploy": "^0.12.1"
   }

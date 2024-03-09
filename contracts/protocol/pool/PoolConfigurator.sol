@@ -95,10 +95,10 @@ contract PoolConfigurator is VersionedInitializable, IPoolConfigurator {
   }
 
   /// @inheritdoc IPoolConfigurator
-  function updateAToken(
-    ConfiguratorInputTypes.UpdateATokenInput calldata input
+  function updateBToken(
+    ConfiguratorInputTypes.UpdateBTokenInput calldata input
   ) external override onlyPoolAdmin {
-    ConfiguratorLogic.executeUpdateAToken(_pool, input);
+    ConfiguratorLogic.executeUpdateBToken(_pool, input);
   }
 
   /// @inheritdoc IPoolConfigurator
@@ -469,11 +469,11 @@ contract PoolConfigurator is VersionedInitializable, IPoolConfigurator {
   }
 
   function _checkNoSuppliers(address asset) internal view {
-    (, uint256 accruedToTreasury, uint256 totalATokens, , , , , , , , , ) = IPoolDataProvider(
+    (, uint256 accruedToTreasury, uint256 totalBTokens, , , , , , , , , ) = IPoolDataProvider(
       _addressesProvider.getPoolDataProvider()
     ).getReserveData(asset);
 
-    require(totalATokens == 0 && accruedToTreasury == 0, Errors.RESERVE_LIQUIDITY_NOT_ZERO);
+    require(totalBTokens == 0 && accruedToTreasury == 0, Errors.RESERVE_LIQUIDITY_NOT_ZERO);
   }
 
   function _checkNoBorrowers(address asset) internal view {

@@ -4,7 +4,7 @@ pragma solidity ^0.8.10;
 import {GPv2SafeERC20} from '../../../dependencies/gnosis/contracts/GPv2SafeERC20.sol';
 import {SafeCast} from '../../../dependencies/openzeppelin/contracts/SafeCast.sol';
 import {IERC20} from '../../../dependencies/openzeppelin/contracts/IERC20.sol';
-import {IAToken} from '../../../interfaces/IAToken.sol';
+import {IBToken} from '../../../interfaces/IBToken.sol';
 import {IFlashLoanReceiver} from '../../../flashloan/interfaces/IFlashLoanReceiver.sol';
 import {IFlashLoanSimpleReceiver} from '../../../flashloan/interfaces/IFlashLoanSimpleReceiver.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
@@ -95,7 +95,7 @@ library FlashLoanLogic {
         DataTypes.InterestRateMode.NONE
         ? vars.currentAmount.percentMul(vars.flashloanPremiumTotal)
         : 0;
-      IAToken(reservesData[params.assets[vars.i]].aTokenAddress).transferUnderlyingTo(
+      IBToken(reservesData[params.assets[vars.i]].bTokenAddress).transferUnderlyingTo(
         params.receiverAddress,
         vars.currentAmount
       );
@@ -191,7 +191,7 @@ library FlashLoanLogic {
 
     IFlashLoanSimpleReceiver receiver = IFlashLoanSimpleReceiver(params.receiverAddress);
     uint256 totalPremium = params.amount.percentMul(params.flashLoanPremiumTotal);
-    IAToken(reserve.aTokenAddress).transferUnderlyingTo(params.receiverAddress, params.amount);
+    IBToken(reserve.bTokenAddress).transferUnderlyingTo(params.receiverAddress, params.amount);
 
     require(
       receiver.executeOperation(
@@ -234,7 +234,7 @@ library FlashLoanLogic {
     DataTypes.ReserveCache memory reserveCache = reserve.cache();
     reserve.updateState(reserveCache);
     reserveCache.nextLiquidityIndex = reserve.cumulateToLiquidityIndex(
-      IERC20(reserveCache.aTokenAddress).totalSupply() +
+      IERC20(reserveCache.bTokenAddress).totalSupply() +
         uint256(reserve.accruedToTreasury).rayMul(reserveCache.nextLiquidityIndex),
       premiumToLP
     );
@@ -247,11 +247,11 @@ library FlashLoanLogic {
 
     IERC20(params.asset).safeTransferFrom(
       params.receiverAddress,
-      reserveCache.aTokenAddress,
+      reserveCache.bTokenAddress,
       amountPlusPremium
     );
 
-    IAToken(reserveCache.aTokenAddress).handleRepayment(
+    IBToken(reserveCache.bTokenAddress).handleRepayment(
       params.receiverAddress,
       params.receiverAddress,
       amountPlusPremium

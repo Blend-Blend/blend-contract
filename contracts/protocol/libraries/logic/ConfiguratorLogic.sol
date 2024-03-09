@@ -2,7 +2,7 @@
 pragma solidity ^0.8.10;
 
 import {IPool} from '../../../interfaces/IPool.sol';
-import {IInitializableAToken} from '../../../interfaces/IInitializableAToken.sol';
+import {IInitializableBToken} from '../../../interfaces/IInitializableBToken.sol';
 import {IInitializableDebtToken} from '../../../interfaces/IInitializableDebtToken.sol';
 import {InitializableImmutableAdminUpgradeabilityProxy} from '../upgradeability/InitializableImmutableAdminUpgradeabilityProxy.sol';
 import {ReserveConfiguration} from '../configuration/ReserveConfiguration.sol';
@@ -25,7 +25,7 @@ library ConfiguratorLogic {
     address variableDebtToken,
     address interestRateStrategyAddress
   );
-  event ATokenUpgraded(
+  event BTokenUpgraded(
     address indexed asset,
     address indexed proxy,
     address indexed implementation
@@ -54,7 +54,7 @@ library ConfiguratorLogic {
     address bTokenProxyAddress = _initTokenWithProxy(
       input.bTokenImpl,
       abi.encodeWithSelector(
-        IInitializableAToken.initialize.selector,
+        IInitializableBToken.initialize.selector,
         pool,
         input.treasury,
         input.underlyingAsset,
@@ -123,20 +123,20 @@ library ConfiguratorLogic {
 
   /**
    * @notice Updates the bToken implementation and initializes it
-   * @dev Emits the `ATokenUpgraded` event
+   * @dev Emits the `BTokenUpgraded` event
    * @param cachedPool The Pool containing the reserve with the bToken
    * @param input The parameters needed for the initialize call
    */
-  function executeUpdateAToken(
+  function executeUpdateBToken(
     IPool cachedPool,
-    ConfiguratorInputTypes.UpdateATokenInput calldata input
+    ConfiguratorInputTypes.UpdateBTokenInput calldata input
   ) public {
     DataTypes.ReserveData memory reserveData = cachedPool.getReserveData(input.asset);
 
     (, , , uint256 decimals, , ) = cachedPool.getConfiguration(input.asset).getParams();
 
     bytes memory encodedCall = abi.encodeWithSelector(
-      IInitializableAToken.initialize.selector,
+      IInitializableBToken.initialize.selector,
       cachedPool,
       input.treasury,
       input.asset,
@@ -149,7 +149,7 @@ library ConfiguratorLogic {
 
     _upgradeTokenImplementation(reserveData.bTokenAddress, input.implementation, encodedCall);
 
-    emit ATokenUpgraded(input.asset, reserveData.bTokenAddress, input.implementation);
+    emit BTokenUpgraded(input.asset, reserveData.bTokenAddress, input.implementation);
   }
 
   /**

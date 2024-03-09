@@ -6,7 +6,7 @@ import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
 import {GPv2SafeERC20} from '../../dependencies/gnosis/contracts/GPv2SafeERC20.sol';
 import {IWETH} from '../../misc/interfaces/IWETH.sol';
 import {IPool} from '../../interfaces/IPool.sol';
-import {IAToken} from '../../interfaces/IAToken.sol';
+import {IBToken} from '../../interfaces/IBToken.sol';
 import {ReserveConfiguration} from '../../protocol/libraries/configuration/ReserveConfiguration.sol';
 import {UserConfiguration} from '../../protocol/libraries/configuration/UserConfiguration.sol';
 import {DataTypes} from '../../protocol/libraries/types/DataTypes.sol';
@@ -42,9 +42,9 @@ contract WrappedTokenGatewayV3 is IWrappedTokenGatewayV3, Ownable {
   }
 
   /**
-   * @dev deposits WETH into the reserve, using native ETH. A corresponding amount of the overlying asset (aTokens)
+   * @dev deposits WETH into the reserve, using native ETH. A corresponding amount of the overlying asset (bTokens)
    * is minted.
-   * @param onBehalfOf address of the user who will receive the aTokens representing the deposit
+   * @param onBehalfOf address of the user who will receive the bTokens representing the deposit
    * @param referralCode integrators are assigned a referral code and can potentially receive rewards.
    **/
   function depositETH(
@@ -66,7 +66,7 @@ contract WrappedTokenGatewayV3 is IWrappedTokenGatewayV3, Ownable {
     uint256 amount,
     address to
   ) external override {
-    IAToken aWETH = IAToken(POOL.getReserveData(address(WETH)).aTokenAddress);
+    IBToken aWETH = IBToken(POOL.getReserveData(address(WETH)).bTokenAddress);
     uint256 userBalance = aWETH.balanceOf(msg.sender);
     uint256 amountToWithdraw = amount;
 
@@ -148,7 +148,7 @@ contract WrappedTokenGatewayV3 is IWrappedTokenGatewayV3, Ownable {
     bytes32 permitR,
     bytes32 permitS
   ) external override {
-    IAToken aWETH = IAToken(POOL.getReserveData(address(WETH)).aTokenAddress);
+    IBToken aWETH = IBToken(POOL.getReserveData(address(WETH)).bTokenAddress);
     uint256 userBalance = aWETH.balanceOf(msg.sender);
     uint256 amountToWithdraw = amount;
 

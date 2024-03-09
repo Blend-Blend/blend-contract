@@ -5,7 +5,7 @@ import {IERC20Detailed} from '../../dependencies/openzeppelin/contracts/IERC20De
 import {IPoolAddressesProvider} from '../../interfaces/IPoolAddressesProvider.sol';
 import {IPool} from '../../interfaces/IPool.sol';
 import {IProtocolOracle} from '../../interfaces/IProtocolOracle.sol';
-import {IAToken} from '../../interfaces/IAToken.sol';
+import {IBToken} from '../../interfaces/IBToken.sol';
 import {IVariableDebtToken} from '../../interfaces/IVariableDebtToken.sol';
 import {IStableDebtToken} from '../../interfaces/IStableDebtToken.sol';
 import {DefaultReserveInterestRateStrategy} from '../../protocol/pool/DefaultReserveInterestRateStrategy.sol';
@@ -78,7 +78,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
       //the current stable borrow rate. Expressed in ray
       reserveData.stableBorrowRate = baseData.currentStableBorrowRate;
       reserveData.lastUpdateTimestamp = baseData.lastUpdateTimestamp;
-      reserveData.aTokenAddress = baseData.aTokenAddress;
+      reserveData.bTokenAddress = baseData.bTokenAddress;
       reserveData.stableDebtTokenAddress = baseData.stableDebtTokenAddress;
       reserveData.variableDebtTokenAddress = baseData.variableDebtTokenAddress;
       //address of the interest rate strategy
@@ -88,7 +88,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
       );
       reserveData.priceOracle = oracle.getSourceOfAsset(reserveData.underlyingAsset);
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
-        reserveData.aTokenAddress
+        reserveData.bTokenAddress
       );
       (
         reserveData.totalPrincipalStableDebt,
@@ -249,7 +249,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
 
       // user reserve data
       userReservesData[i].underlyingAsset = reserves[i];
-      userReservesData[i].scaledATokenBalance = IAToken(baseData.aTokenAddress).scaledBalanceOf(
+      userReservesData[i].scaledBTokenBalance = IBToken(baseData.bTokenAddress).scaledBalanceOf(
         user
       );
       userReservesData[i].usageAsCollateralEnabledOnUser = userConfig.isUsingAsCollateral(i);

@@ -229,7 +229,7 @@ contract L2Encoder {
    * @param interestRateMode The interest rate mode at of the debt the user wants to repay: 1 for Stable, 2 for Variable
    * @return compact representation of repay with bToken parameters
    */
-  function encodeRepayWithATokensParams(
+  function encoderepayWithBTokensParams(
     address asset,
     uint256 amount,
     uint256 interestRateMode
@@ -302,7 +302,7 @@ contract L2Encoder {
    * @param debtAsset The address of the underlying borrowed asset to be repaid with the liquidation
    * @param user The address of the borrower getting liquidated
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
-   * @param receiveAToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
+   * @param receiveBToken True if the liquidators wants to receive the collateral bTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    * @return First half ot compact representation of liquidation call parameters
    * @return Second half ot compact representation of liquidation call parameters
@@ -312,7 +312,7 @@ contract L2Encoder {
     address debtAsset,
     address user,
     uint256 debtToCover,
-    bool receiveAToken
+    bool receiveBToken
   ) external view returns (bytes32, bytes32) {
     DataTypes.ReserveData memory collateralData = POOL.getReserveData(collateralAsset);
     uint16 collateralAssetId = collateralData.id;
@@ -329,7 +329,7 @@ contract L2Encoder {
 
     assembly {
       res1 := add(add(collateralAssetId, shl(16, debtAssetId)), shl(32, user))
-      res2 := add(shortenedDebtToCover, shl(128, receiveAToken))
+      res2 := add(shortenedDebtToCover, shl(128, receiveBToken))
     }
     return (res1, res2);
   }

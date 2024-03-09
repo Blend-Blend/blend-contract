@@ -81,36 +81,36 @@ abstract contract BaseParaSwapAdapter is FlashLoanSimpleReceiverBase, Ownable {
     return POOL.getReserveData(asset);
   }
 
-  function _pullATokenAndWithdraw(
+  function _pullBTokenAndWithdraw(
     address reserve,
     address user,
     uint256 amount,
     PermitSignature memory permitSignature
   ) internal {
-    IERC20WithPermit reserveAToken = IERC20WithPermit(
+    IERC20WithPermit reserveBToken = IERC20WithPermit(
       _getReserveData(address(reserve)).bTokenAddress
     );
-    _pullATokenAndWithdraw(reserve, reserveAToken, user, amount, permitSignature);
+    _pullBTokenAndWithdraw(reserve, reserveBToken, user, amount, permitSignature);
   }
 
   /**
-   * @dev Pull the ATokens from the user
+   * @dev Pull the BTokens from the user
    * @param reserve address of the asset
-   * @param reserveAToken address of the bToken of the reserve
+   * @param reserveBToken address of the bToken of the reserve
    * @param user address
    * @param amount of tokens to be transferred to the contract
    * @param permitSignature struct containing the permit signature
    */
-  function _pullATokenAndWithdraw(
+  function _pullBTokenAndWithdraw(
     address reserve,
-    IERC20WithPermit reserveAToken,
+    IERC20WithPermit reserveBToken,
     address user,
     uint256 amount,
     PermitSignature memory permitSignature
   ) internal {
     // If deadline is set to zero, assume there is no signature for permit
     if (permitSignature.deadline != 0) {
-      reserveAToken.permit(
+      reserveBToken.permit(
         user,
         address(this),
         permitSignature.amount,
@@ -122,7 +122,7 @@ abstract contract BaseParaSwapAdapter is FlashLoanSimpleReceiverBase, Ownable {
     }
 
     // transfer from user to adapter
-    reserveAToken.safeTransferFrom(user, address(this), amount);
+    reserveBToken.safeTransferFrom(user, address(this), amount);
 
     // withdraw reserve
     require(POOL.withdraw(reserve, amount, address(this)) == amount, 'UNEXPECTED_AMOUNT_WITHDRAWN');

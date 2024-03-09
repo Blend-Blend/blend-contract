@@ -6,7 +6,7 @@ import {SafeCast} from '../../../dependencies/openzeppelin/contracts/SafeCast.so
 import {IERC20} from '../../../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IStableDebtToken} from '../../../interfaces/IStableDebtToken.sol';
 import {IVariableDebtToken} from '../../../interfaces/IVariableDebtToken.sol';
-import {IAToken} from '../../../interfaces/IAToken.sol';
+import {IBToken} from '../../../interfaces/IBToken.sol';
 import {UserConfiguration} from '../configuration/UserConfiguration.sol';
 import {ReserveConfiguration} from '../configuration/ReserveConfiguration.sol';
 import {Helpers} from '../helpers/Helpers.sol';
@@ -43,7 +43,7 @@ library BorrowLogic {
     address indexed user,
     address indexed repayer,
     uint256 amount,
-    bool useATokens
+    bool useBTokens
   );
   event RebalanceStableBorrowRate(address indexed reserve, address indexed user);
   event SwapBorrowRateMode(
@@ -150,7 +150,7 @@ library BorrowLogic {
     );
 
     if (params.releaseUnderlying) {
-      IAToken(reserveCache.bTokenAddress).transferUnderlyingTo(params.user, params.amount);
+      IBToken(reserveCache.bTokenAddress).transferUnderlyingTo(params.user, params.amount);
     }
 
     emit Borrow(
@@ -206,8 +206,8 @@ library BorrowLogic {
       : variableDebt;
 
     // Allows a user to repay with bTokens without leaving dust from interest.
-    if (params.useATokens && params.amount == type(uint256).max) {
-      params.amount = IAToken(reserveCache.bTokenAddress).balanceOf(msg.sender);
+    if (params.useBTokens && params.amount == type(uint256).max) {
+      params.amount = IBToken(reserveCache.bTokenAddress).balanceOf(msg.sender);
     }
 
     if (params.amount < paybackAmount) {
@@ -227,7 +227,7 @@ library BorrowLogic {
     reserve.updateInterestRates(
       reserveCache,
       params.asset,
-      params.useATokens ? 0 : paybackAmount,
+      params.useBTokens ? 0 : paybackAmount,
       0
     );
 
@@ -243,8 +243,8 @@ library BorrowLogic {
       paybackAmount
     );
 
-    if (params.useATokens) {
-      IAToken(reserveCache.bTokenAddress).burn(
+    if (params.useBTokens) {
+      IBToken(reserveCache.bTokenAddress).burn(
         msg.sender,
         reserveCache.bTokenAddress,
         paybackAmount,
@@ -252,14 +252,14 @@ library BorrowLogic {
       );
     } else {
       IERC20(params.asset).safeTransferFrom(msg.sender, reserveCache.bTokenAddress, paybackAmount);
-      IAToken(reserveCache.bTokenAddress).handleRepayment(
+      IBToken(reserveCache.bTokenAddress).handleRepayment(
         msg.sender,
         params.onBehalfOf,
         paybackAmount
       );
     }
 
-    emit Repay(params.asset, params.onBehalfOf, msg.sender, paybackAmount, params.useATokens);
+    emit Repay(params.asset, params.onBehalfOf, msg.sender, paybackAmount, params.useBTokens);
 
     return paybackAmount;
   }
