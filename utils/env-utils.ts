@@ -36,18 +36,9 @@ export const getMockRWA = (name: string) => {
 
 export const getWethAddress = async () => {
   if (hre.network.name == "hardhat") {
-    const { deployments, getNamedAccounts } = hre;
-    const { deploy } = deployments;
-
-    const { deployer } = await getNamedAccounts();
-    await deploy("WETH9", {
-      from: deployer,
-    }).then((res) => {
-      console.log("WETH deployed to: %s, %s", res.address, res.newlyDeployed);
-    });
-    return (await deployments.get("WETH9")).address;
+    return (await deployments.get("WBTC")).address;
   } else {
-    return getAddress("weth");
+    return getAddress("wbtc");
   }
 };
 

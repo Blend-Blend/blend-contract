@@ -12,7 +12,7 @@ import {
   SubTokenOutput,
   AssetType,
 } from "./types";
-import TestnetMarket from "./testnet";
+import TestnetMarket, { BlendMarket } from "./config";
 import { isValidAddress } from "./utils";
 import {
   BTOKEN_PREFIX,
@@ -95,8 +95,10 @@ export const getAddressFromConfig = (
 
 export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
   switch (configName) {
-    case ConfigNames.Testnet:
-      return TestnetMarket;
+    case ConfigNames.Commons:
+      return BlendMarket;
+    case ConfigNames.Bevm:
+      return BlendMarket;
     default:
       throw new Error(
         `Unsupported pool configuration: ${configName} is not one of the supported configs ${Object.values(
@@ -120,7 +122,7 @@ export const savePoolTokens = async (
   reservesConfig: ITokenAddress,
   dataProviderAddress: tEthereumAddress
 ) => {
-  const dataProviderArtifact = await hre.deployments.get("PoolDataProvider");
+  const dataProviderArtifact = await hre.deployments.get(POOL_DATA_PROVIDER);
   const dataProvider = (await hre.ethers.getContractAt(
     dataProviderArtifact.abi,
     dataProviderAddress

@@ -1,0 +1,489 @@
+{
+  "address": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IPoolAddressesProvider",
+          "name": "provider",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "assets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sources",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address",
+          "name": "fallbackOracle",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "baseCurrency",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "baseCurrencyUnit",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "source",
+          "type": "address"
+        }
+      ],
+      "name": "AssetSourceUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "baseCurrency",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "baseCurrencyUnit",
+          "type": "uint256"
+        }
+      ],
+      "name": "BaseCurrencySet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "fallbackOracle",
+          "type": "address"
+        }
+      ],
+      "name": "FallbackOracleUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "ADDRESSES_PROVIDER",
+      "outputs": [
+        {
+          "internalType": "contract IPoolAddressesProvider",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "BASE_CURRENCY",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "BASE_CURRENCY_UNIT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "getAssetPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "assets",
+          "type": "address[]"
+        }
+      ],
+      "name": "getAssetsPrices",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getFallbackOracle",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "getSourceOfAsset",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "assets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "sources",
+          "type": "address[]"
+        }
+      ],
+      "name": "setAssetSources",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "fallbackOracle",
+          "type": "address"
+        }
+      ],
+      "name": "setFallbackOracle",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x6420e6f25f2e01c0505cc578e85929fddd6df66631827dbc451f6bcf9b7bd05e",
+  "receipt": {
+    "to": null,
+    "from": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "contractAddress": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+    "transactionIndex": 0,
+    "gasUsed": "679286",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000021000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000002000000000000020000000000000000000800000002000800000000000000000000000000000000000000000000000000000000000002000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000004000000000000000000100000000000000000000000000000000000020000000000000000080000000000000000000000000800000000000000000000000",
+    "blockHash": "0x05b50264d4daa92f6aae24673de7ffda85b6f5ff58c245a466039bc74b2c8087",
+    "transactionHash": "0x6420e6f25f2e01c0505cc578e85929fddd6df66631827dbc451f6bcf9b7bd05e",
+    "logs": [
+      {
+        "transactionIndex": 0,
+        "blockNumber": 42,
+        "transactionHash": "0x6420e6f25f2e01c0505cc578e85929fddd6df66631827dbc451f6bcf9b7bd05e",
+        "address": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+        "topics": [
+          "0xce7a780d33665b1ea097af5f155e3821b809ecbaa839d3b33aa83ba28168cefb",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "data": "0x",
+        "logIndex": 0,
+        "blockHash": "0x05b50264d4daa92f6aae24673de7ffda85b6f5ff58c245a466039bc74b2c8087"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 42,
+        "transactionHash": "0x6420e6f25f2e01c0505cc578e85929fddd6df66631827dbc451f6bcf9b7bd05e",
+        "address": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+        "topics": [
+          "0x22c5b7b2d8561d39f7f210b6b326a1aa69f15311163082308ac4877db6339dc1",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "data": "0x",
+        "logIndex": 1,
+        "blockHash": "0x05b50264d4daa92f6aae24673de7ffda85b6f5ff58c245a466039bc74b2c8087"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 42,
+        "transactionHash": "0x6420e6f25f2e01c0505cc578e85929fddd6df66631827dbc451f6bcf9b7bd05e",
+        "address": "0x4826533B4897376654Bb4d4AD88B7faFD0C98528",
+        "topics": [
+          "0xe27c4c1372396a3d15a9922f74f9dfc7c72b1ad6d63868470787249c356454c1",
+          "0x0000000000000000000000000000000000000000000000000000000000000000"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000005f5e100",
+        "logIndex": 2,
+        "blockHash": "0x05b50264d4daa92f6aae24673de7ffda85b6f5ff58c245a466039bc74b2c8087"
+      }
+    ],
+    "blockNumber": 42,
+    "cumulativeGasUsed": "679286",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0x84eA74d481Ee0A5332c457a4d796187F6Ba67fEB",
+    [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    [
+      "0x0000000000000000000000000000000000000000"
+    ],
+    "0x0000000000000000000000000000000000000000",
+    "0x0000000000000000000000000000000000000000",
+    "100000000"
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "c351ce62b62f76bd5a8479a8f9cf6c24",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract IPoolAddressesProvider\",\"name\":\"provider\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"assets\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"sources\",\"type\":\"address[]\"},{\"internalType\":\"address\",\"name\":\"fallbackOracle\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"baseCurrency\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"baseCurrencyUnit\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"source\",\"type\":\"address\"}],\"name\":\"AssetSourceUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"baseCurrency\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"baseCurrencyUnit\",\"type\":\"uint256\"}],\"name\":\"BaseCurrencySet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"fallbackOracle\",\"type\":\"address\"}],\"name\":\"FallbackOracleUpdated\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"ADDRESSES_PROVIDER\",\"outputs\":[{\"internalType\":\"contract IPoolAddressesProvider\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"BASE_CURRENCY\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"BASE_CURRENCY_UNIT\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"getAssetPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"assets\",\"type\":\"address[]\"}],\"name\":\"getAssetsPrices\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getFallbackOracle\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"getSourceOfAsset\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"assets\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"sources\",\"type\":\"address[]\"}],\"name\":\"setAssetSources\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"fallbackOracle\",\"type\":\"address\"}],\"name\":\"setFallbackOracle\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Aave\",\"events\":{\"AssetSourceUpdated(address,address)\":{\"details\":\"Emitted after the price source of an asset is updated\",\"params\":{\"asset\":\"The address of the asset\",\"source\":\"The price source of the asset\"}},\"BaseCurrencySet(address,uint256)\":{\"details\":\"Emitted after the base currency is set\",\"params\":{\"baseCurrency\":\"The base currency of used for price quotes\",\"baseCurrencyUnit\":\"The unit of the base currency\"}},\"FallbackOracleUpdated(address)\":{\"details\":\"Emitted after the address of fallback oracle is updated\",\"params\":{\"fallbackOracle\":\"The address of the fallback oracle\"}}},\"kind\":\"dev\",\"methods\":{\"constructor\":{\"params\":{\"assets\":\"The addresses of the assets\",\"baseCurrency\":\"The base currency used for the price quotes. If USD is used, base currency is 0x0\",\"baseCurrencyUnit\":\"The unit of the base currency\",\"fallbackOracle\":\"The address of the fallback oracle to use if the data of an        aggregator is not consistent\",\"provider\":\"The address of the new PoolAddressesProvider\",\"sources\":\"The address of the source of each asset\"}},\"getAssetPrice(address)\":{\"params\":{\"asset\":\"The address of the asset\"},\"returns\":{\"_0\":\"The price of the asset\"}},\"getAssetsPrices(address[])\":{\"params\":{\"assets\":\"The list of assets addresses\"},\"returns\":{\"_0\":\"The prices of the given assets\"}},\"getFallbackOracle()\":{\"returns\":{\"_0\":\"The address of the fallback oracle\"}},\"getSourceOfAsset(address)\":{\"params\":{\"asset\":\"The address of the asset\"},\"returns\":{\"_0\":\"The address of the source\"}},\"setAssetSources(address[],address[])\":{\"params\":{\"assets\":\"The addresses of the assets\",\"sources\":\"The addresses of the price sources\"}},\"setFallbackOracle(address)\":{\"params\":{\"fallbackOracle\":\"The address of the fallback oracle\"}}},\"stateVariables\":{\"ADDRESSES_PROVIDER\":{\"return\":\"The address of the PoolAddressesProvider contract\",\"returns\":{\"_0\":\"The address of the PoolAddressesProvider contract\"}},\"BASE_CURRENCY\":{\"details\":\"Address 0x0 is reserved for USD as base currency.\",\"return\":\"Returns the base currency address.\",\"returns\":{\"_0\":\"Returns the base currency address.\"}},\"BASE_CURRENCY_UNIT\":{\"details\":\"1 ether for ETH, 1e8 for USD.\",\"return\":\"Returns the base currency unit.\",\"returns\":{\"_0\":\"Returns the base currency unit.\"}}},\"title\":\"ProtocolOracle\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"ADDRESSES_PROVIDER()\":{\"notice\":\"Returns the PoolAddressesProvider\"},\"BASE_CURRENCY()\":{\"notice\":\"Returns the base currency address\"},\"BASE_CURRENCY_UNIT()\":{\"notice\":\"Returns the base currency unit\"},\"constructor\":{\"notice\":\"Constructor\"},\"getAssetPrice(address)\":{\"notice\":\"Returns the asset price in the base currency\"},\"getAssetsPrices(address[])\":{\"notice\":\"Returns a list of prices from a list of assets addresses\"},\"getFallbackOracle()\":{\"notice\":\"Returns the address of the fallback oracle\"},\"getSourceOfAsset(address)\":{\"notice\":\"Returns the address of the source for an asset address\"},\"setAssetSources(address[],address[])\":{\"notice\":\"Sets or replaces price sources of assets\"},\"setFallbackOracle(address)\":{\"notice\":\"Sets the fallback oracle\"}},\"notice\":\"Contract to get asset prices, manage price sources and update the fallback oracle - Use of Chainlink Aggregators as first source of price - If the returned price by a Chainlink aggregator is <= 0, the call is forwarded to a fallback oracle - Owned by the Aave governance\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/misc/ProtocolOracle.sol\":\"ProtocolOracle\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/dependencies/chainlink/AggregatorInterface.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\r\\n// Chainlink Contracts v0.8\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\ninterface AggregatorInterface {\\r\\n  function latestAnswer() external view returns (int256);\\r\\n\\r\\n  function latestTimestamp() external view returns (uint256);\\r\\n\\r\\n  function latestRound() external view returns (uint256);\\r\\n\\r\\n  function getAnswer(uint256 roundId) external view returns (int256);\\r\\n\\r\\n  function getTimestamp(uint256 roundId) external view returns (uint256);\\r\\n\\r\\n  event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 updatedAt);\\r\\n\\r\\n  event NewRound(uint256 indexed roundId, address indexed startedBy, uint256 startedAt);\\r\\n}\\r\\n\",\"keccak256\":\"0x68db5b201c436475e2bc82007e5a3277dae525154162bd53a41f1b0f401dc516\",\"license\":\"MIT\"},\"contracts/interfaces/IACLManager.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\nimport {IPoolAddressesProvider} from './IPoolAddressesProvider.sol';\\r\\n\\r\\n/**\\r\\n * @title IACLManager\\r\\n * @author Aave\\r\\n * @notice Defines the basic interface for the ACL Manager\\r\\n */\\r\\ninterface IACLManager {\\r\\n  /**\\r\\n   * @notice Returns the contract address of the PoolAddressesProvider\\r\\n   * @return The address of the PoolAddressesProvider\\r\\n   */\\r\\n  function ADDRESSES_PROVIDER() external view returns (IPoolAddressesProvider);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the PoolAdmin role\\r\\n   * @return The id of the PoolAdmin role\\r\\n   */\\r\\n  function POOL_ADMIN_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the EmergencyAdmin role\\r\\n   * @return The id of the EmergencyAdmin role\\r\\n   */\\r\\n  function EMERGENCY_ADMIN_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the RiskAdmin role\\r\\n   * @return The id of the RiskAdmin role\\r\\n   */\\r\\n  function RISK_ADMIN_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the FlashBorrower role\\r\\n   * @return The id of the FlashBorrower role\\r\\n   */\\r\\n  function FLASH_BORROWER_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the Bridge role\\r\\n   * @return The id of the Bridge role\\r\\n   */\\r\\n  function BRIDGE_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the identifier of the AssetListingAdmin role\\r\\n   * @return The id of the AssetListingAdmin role\\r\\n   */\\r\\n  function ASSET_LISTING_ADMIN_ROLE() external view returns (bytes32);\\r\\n\\r\\n  /**\\r\\n   * @notice Set the role as admin of a specific role.\\r\\n   * @dev By default the admin role for all roles is `DEFAULT_ADMIN_ROLE`.\\r\\n   * @param role The role to be managed by the admin role\\r\\n   * @param adminRole The admin role\\r\\n   */\\r\\n  function setRoleAdmin(bytes32 role, bytes32 adminRole) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new admin as PoolAdmin\\r\\n   * @param admin The address of the new admin\\r\\n   */\\r\\n  function addPoolAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an admin as PoolAdmin\\r\\n   * @param admin The address of the admin to remove\\r\\n   */\\r\\n  function removePoolAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is PoolAdmin, false otherwise\\r\\n   * @param admin The address to check\\r\\n   * @return True if the given address is PoolAdmin, false otherwise\\r\\n   */\\r\\n  function isPoolAdmin(address admin) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new admin as EmergencyAdmin\\r\\n   * @param admin The address of the new admin\\r\\n   */\\r\\n  function addEmergencyAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an admin as EmergencyAdmin\\r\\n   * @param admin The address of the admin to remove\\r\\n   */\\r\\n  function removeEmergencyAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is EmergencyAdmin, false otherwise\\r\\n   * @param admin The address to check\\r\\n   * @return True if the given address is EmergencyAdmin, false otherwise\\r\\n   */\\r\\n  function isEmergencyAdmin(address admin) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new admin as RiskAdmin\\r\\n   * @param admin The address of the new admin\\r\\n   */\\r\\n  function addRiskAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an admin as RiskAdmin\\r\\n   * @param admin The address of the admin to remove\\r\\n   */\\r\\n  function removeRiskAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is RiskAdmin, false otherwise\\r\\n   * @param admin The address to check\\r\\n   * @return True if the given address is RiskAdmin, false otherwise\\r\\n   */\\r\\n  function isRiskAdmin(address admin) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new address as FlashBorrower\\r\\n   * @param borrower The address of the new FlashBorrower\\r\\n   */\\r\\n  function addFlashBorrower(address borrower) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an address as FlashBorrower\\r\\n   * @param borrower The address of the FlashBorrower to remove\\r\\n   */\\r\\n  function removeFlashBorrower(address borrower) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is FlashBorrower, false otherwise\\r\\n   * @param borrower The address to check\\r\\n   * @return True if the given address is FlashBorrower, false otherwise\\r\\n   */\\r\\n  function isFlashBorrower(address borrower) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new address as Bridge\\r\\n   * @param bridge The address of the new Bridge\\r\\n   */\\r\\n  function addBridge(address bridge) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an address as Bridge\\r\\n   * @param bridge The address of the bridge to remove\\r\\n   */\\r\\n  function removeBridge(address bridge) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is Bridge, false otherwise\\r\\n   * @param bridge The address to check\\r\\n   * @return True if the given address is Bridge, false otherwise\\r\\n   */\\r\\n  function isBridge(address bridge) external view returns (bool);\\r\\n\\r\\n  /**\\r\\n   * @notice Adds a new admin as AssetListingAdmin\\r\\n   * @param admin The address of the new admin\\r\\n   */\\r\\n  function addAssetListingAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Removes an admin as AssetListingAdmin\\r\\n   * @param admin The address of the admin to remove\\r\\n   */\\r\\n  function removeAssetListingAdmin(address admin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns true if the address is AssetListingAdmin, false otherwise\\r\\n   * @param admin The address to check\\r\\n   * @return True if the given address is AssetListingAdmin, false otherwise\\r\\n   */\\r\\n  function isAssetListingAdmin(address admin) external view returns (bool);\\r\\n}\\r\\n\",\"keccak256\":\"0x518142961e1f7c74c9709585287a5dd698874a6db42f7155c2e6564e313888bb\",\"license\":\"AGPL-3.0\"},\"contracts/interfaces/IPoolAddressesProvider.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\n/**\\r\\n * @title IPoolAddressesProvider\\r\\n * @author Aave\\r\\n * @notice Defines the basic interface for a Pool Addresses Provider.\\r\\n */\\r\\ninterface IPoolAddressesProvider {\\r\\n  /**\\r\\n   * @dev Emitted when the market identifier is updated.\\r\\n   * @param oldMarketId The old id of the market\\r\\n   * @param newMarketId The new id of the market\\r\\n   */\\r\\n  event MarketIdSet(string indexed oldMarketId, string indexed newMarketId);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the pool is updated.\\r\\n   * @param oldAddress The old address of the Pool\\r\\n   * @param newAddress The new address of the Pool\\r\\n   */\\r\\n  event PoolUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the pool configurator is updated.\\r\\n   * @param oldAddress The old address of the PoolConfigurator\\r\\n   * @param newAddress The new address of the PoolConfigurator\\r\\n   */\\r\\n  event PoolConfiguratorUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the price oracle is updated.\\r\\n   * @param oldAddress The old address of the PriceOracle\\r\\n   * @param newAddress The new address of the PriceOracle\\r\\n   */\\r\\n  event PriceOracleUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the ACL manager is updated.\\r\\n   * @param oldAddress The old address of the ACLManager\\r\\n   * @param newAddress The new address of the ACLManager\\r\\n   */\\r\\n  event ACLManagerUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the ACL admin is updated.\\r\\n   * @param oldAddress The old address of the ACLAdmin\\r\\n   * @param newAddress The new address of the ACLAdmin\\r\\n   */\\r\\n  event ACLAdminUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the price oracle sentinel is updated.\\r\\n   * @param oldAddress The old address of the PriceOracleSentinel\\r\\n   * @param newAddress The new address of the PriceOracleSentinel\\r\\n   */\\r\\n  event PriceOracleSentinelUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the pool data provider is updated.\\r\\n   * @param oldAddress The old address of the PoolDataProvider\\r\\n   * @param newAddress The new address of the PoolDataProvider\\r\\n   */\\r\\n  event PoolDataProviderUpdated(address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when a new proxy is created.\\r\\n   * @param id The identifier of the proxy\\r\\n   * @param proxyAddress The address of the created proxy contract\\r\\n   * @param implementationAddress The address of the implementation contract\\r\\n   */\\r\\n  event ProxyCreated(\\r\\n    bytes32 indexed id,\\r\\n    address indexed proxyAddress,\\r\\n    address indexed implementationAddress\\r\\n  );\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when a new non-proxied contract address is registered.\\r\\n   * @param id The identifier of the contract\\r\\n   * @param oldAddress The address of the old contract\\r\\n   * @param newAddress The address of the new contract\\r\\n   */\\r\\n  event AddressSet(bytes32 indexed id, address indexed oldAddress, address indexed newAddress);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted when the implementation of the proxy registered with id is updated\\r\\n   * @param id The identifier of the contract\\r\\n   * @param proxyAddress The address of the proxy contract\\r\\n   * @param oldImplementationAddress The address of the old implementation contract\\r\\n   * @param newImplementationAddress The address of the new implementation contract\\r\\n   */\\r\\n  event AddressSetAsProxy(\\r\\n    bytes32 indexed id,\\r\\n    address indexed proxyAddress,\\r\\n    address oldImplementationAddress,\\r\\n    address indexed newImplementationAddress\\r\\n  );\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the id of the Aave market to which this contract points to.\\r\\n   * @return The market id\\r\\n   */\\r\\n  function getMarketId() external view returns (string memory);\\r\\n\\r\\n  /**\\r\\n   * @notice Associates an id with a specific PoolAddressesProvider.\\r\\n   * @dev This can be used to create an onchain registry of PoolAddressesProviders to\\r\\n   * identify and validate multiple Aave markets.\\r\\n   * @param newMarketId The market id\\r\\n   */\\r\\n  function setMarketId(string calldata newMarketId) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns an address by its identifier.\\r\\n   * @dev The returned address might be an EOA or a contract, potentially proxied\\r\\n   * @dev It returns ZERO if there is no registered address with the given id\\r\\n   * @param id The id\\r\\n   * @return The address of the registered for the specified id\\r\\n   */\\r\\n  function getAddress(bytes32 id) external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice General function to update the implementation of a proxy registered with\\r\\n   * certain `id`. If there is no proxy registered, it will instantiate one and\\r\\n   * set as implementation the `newImplementationAddress`.\\r\\n   * @dev IMPORTANT Use this function carefully, only for ids that don't have an explicit\\r\\n   * setter function, in order to avoid unexpected consequences\\r\\n   * @param id The id\\r\\n   * @param newImplementationAddress The address of the new implementation\\r\\n   */\\r\\n  function setAddressAsProxy(bytes32 id, address newImplementationAddress) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Sets an address for an id replacing the address saved in the addresses map.\\r\\n   * @dev IMPORTANT Use this function carefully, as it will do a hard replacement\\r\\n   * @param id The id\\r\\n   * @param newAddress The address to set\\r\\n   */\\r\\n  function setAddress(bytes32 id, address newAddress) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the Pool proxy.\\r\\n   * @return The Pool proxy address\\r\\n   */\\r\\n  function getPool() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the implementation of the Pool, or creates a proxy\\r\\n   * setting the new `pool` implementation when the function is called for the first time.\\r\\n   * @param newPoolImpl The new Pool implementation\\r\\n   */\\r\\n  function setPoolImpl(address newPoolImpl) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the PoolConfigurator proxy.\\r\\n   * @return The PoolConfigurator proxy address\\r\\n   */\\r\\n  function getPoolConfigurator() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the implementation of the PoolConfigurator, or creates a proxy\\r\\n   * setting the new `PoolConfigurator` implementation when the function is called for the first time.\\r\\n   * @param newPoolConfiguratorImpl The new PoolConfigurator implementation\\r\\n   */\\r\\n  function setPoolConfiguratorImpl(address newPoolConfiguratorImpl) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the price oracle.\\r\\n   * @return The address of the PriceOracle\\r\\n   */\\r\\n  function getPriceOracle() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the address of the price oracle.\\r\\n   * @param newPriceOracle The address of the new PriceOracle\\r\\n   */\\r\\n  function setPriceOracle(address newPriceOracle) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the ACL manager.\\r\\n   * @return The address of the ACLManager\\r\\n   */\\r\\n  function getACLManager() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the address of the ACL manager.\\r\\n   * @param newAclManager The address of the new ACLManager\\r\\n   */\\r\\n  function setACLManager(address newAclManager) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the ACL admin.\\r\\n   * @return The address of the ACL admin\\r\\n   */\\r\\n  function getACLAdmin() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the address of the ACL admin.\\r\\n   * @param newAclAdmin The address of the new ACL admin\\r\\n   */\\r\\n  function setACLAdmin(address newAclAdmin) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the price oracle sentinel.\\r\\n   * @return The address of the PriceOracleSentinel\\r\\n   */\\r\\n  function getPriceOracleSentinel() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the address of the price oracle sentinel.\\r\\n   * @param newPriceOracleSentinel The address of the new PriceOracleSentinel\\r\\n   */\\r\\n  function setPriceOracleSentinel(address newPriceOracleSentinel) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the data provider.\\r\\n   * @return The address of the DataProvider\\r\\n   */\\r\\n  function getPoolDataProvider() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Updates the address of the data provider.\\r\\n   * @param newDataProvider The address of the new DataProvider\\r\\n   */\\r\\n  function setPoolDataProvider(address newDataProvider) external;\\r\\n}\\r\\n\",\"keccak256\":\"0xf37b9fdb389d45783acfc16664c06f28af953d4a409d1059bdf10b917d41fd4a\",\"license\":\"AGPL-3.0\"},\"contracts/interfaces/IPriceOracleGetter.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\n/**\\r\\n * @title IPriceOracleGetter\\r\\n * @author Aave\\r\\n * @notice Interface for the Aave price oracle.\\r\\n */\\r\\ninterface IPriceOracleGetter {\\r\\n  /**\\r\\n   * @notice Returns the base currency address\\r\\n   * @dev Address 0x0 is reserved for USD as base currency.\\r\\n   * @return Returns the base currency address.\\r\\n   */\\r\\n  function BASE_CURRENCY() external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the base currency unit\\r\\n   * @dev 1 ether for ETH, 1e8 for USD.\\r\\n   * @return Returns the base currency unit.\\r\\n   */\\r\\n  function BASE_CURRENCY_UNIT() external view returns (uint256);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the asset price in the base currency\\r\\n   * @param asset The address of the asset\\r\\n   * @return The price of the asset\\r\\n   */\\r\\n  function getAssetPrice(address asset) external view returns (uint256);\\r\\n}\\r\\n\",\"keccak256\":\"0xfda8ee40f53d3c0ca7a7d28a7773fe2ec52ce73d206c53103df935188da0064c\",\"license\":\"AGPL-3.0\"},\"contracts/interfaces/IProtocolOracle.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\nimport {IPriceOracleGetter} from './IPriceOracleGetter.sol';\\r\\nimport {IPoolAddressesProvider} from './IPoolAddressesProvider.sol';\\r\\n\\r\\n/**\\r\\n * @title IProtocolOracle\\r\\n * @author Aave\\r\\n * @notice Defines the basic interface for the Aave Oracle\\r\\n */\\r\\ninterface IProtocolOracle is IPriceOracleGetter {\\r\\n  /**\\r\\n   * @dev Emitted after the base currency is set\\r\\n   * @param baseCurrency The base currency of used for price quotes\\r\\n   * @param baseCurrencyUnit The unit of the base currency\\r\\n   */\\r\\n  event BaseCurrencySet(address indexed baseCurrency, uint256 baseCurrencyUnit);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted after the price source of an asset is updated\\r\\n   * @param asset The address of the asset\\r\\n   * @param source The price source of the asset\\r\\n   */\\r\\n  event AssetSourceUpdated(address indexed asset, address indexed source);\\r\\n\\r\\n  /**\\r\\n   * @dev Emitted after the address of fallback oracle is updated\\r\\n   * @param fallbackOracle The address of the fallback oracle\\r\\n   */\\r\\n  event FallbackOracleUpdated(address indexed fallbackOracle);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the PoolAddressesProvider\\r\\n   * @return The address of the PoolAddressesProvider contract\\r\\n   */\\r\\n  function ADDRESSES_PROVIDER() external view returns (IPoolAddressesProvider);\\r\\n\\r\\n  /**\\r\\n   * @notice Sets or replaces price sources of assets\\r\\n   * @param assets The addresses of the assets\\r\\n   * @param sources The addresses of the price sources\\r\\n   */\\r\\n  function setAssetSources(address[] calldata assets, address[] calldata sources) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Sets the fallback oracle\\r\\n   * @param fallbackOracle The address of the fallback oracle\\r\\n   */\\r\\n  function setFallbackOracle(address fallbackOracle) external;\\r\\n\\r\\n  /**\\r\\n   * @notice Returns a list of prices from a list of assets addresses\\r\\n   * @param assets The list of assets addresses\\r\\n   * @return The prices of the given assets\\r\\n   */\\r\\n  function getAssetsPrices(address[] calldata assets) external view returns (uint256[] memory);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the source for an asset address\\r\\n   * @param asset The address of the asset\\r\\n   * @return The address of the source\\r\\n   */\\r\\n  function getSourceOfAsset(address asset) external view returns (address);\\r\\n\\r\\n  /**\\r\\n   * @notice Returns the address of the fallback oracle\\r\\n   * @return The address of the fallback oracle\\r\\n   */\\r\\n  function getFallbackOracle() external view returns (address);\\r\\n}\\r\\n\",\"keccak256\":\"0x6a33b8e65bee1c123172b523cd8b14ea6432c42c15761e2fd011602ff57e5737\",\"license\":\"AGPL-3.0\"},\"contracts/misc/ProtocolOracle.sol\":{\"content\":\"// SPDX-License-Identifier: BUSL-1.1\\r\\npragma solidity ^0.8.10;\\r\\n\\r\\nimport {AggregatorInterface} from '../dependencies/chainlink/AggregatorInterface.sol';\\r\\nimport {Errors} from '../protocol/libraries/helpers/Errors.sol';\\r\\nimport {IACLManager} from '../interfaces/IACLManager.sol';\\r\\nimport {IPoolAddressesProvider} from '../interfaces/IPoolAddressesProvider.sol';\\r\\nimport {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';\\r\\nimport {IProtocolOracle} from '../interfaces/IProtocolOracle.sol';\\r\\n\\r\\n/**\\r\\n * @title ProtocolOracle\\r\\n * @author Aave\\r\\n * @notice Contract to get asset prices, manage price sources and update the fallback oracle\\r\\n * - Use of Chainlink Aggregators as first source of price\\r\\n * - If the returned price by a Chainlink aggregator is <= 0, the call is forwarded to a fallback oracle\\r\\n * - Owned by the Aave governance\\r\\n */\\r\\ncontract ProtocolOracle is IProtocolOracle {\\r\\n  IPoolAddressesProvider public immutable ADDRESSES_PROVIDER;\\r\\n\\r\\n  // Map of asset price sources (asset => priceSource)\\r\\n  mapping(address => AggregatorInterface) private assetsSources;\\r\\n\\r\\n  IPriceOracleGetter private _fallbackOracle;\\r\\n  address public immutable override BASE_CURRENCY;\\r\\n  uint256 public immutable override BASE_CURRENCY_UNIT;\\r\\n\\r\\n  /**\\r\\n   * @dev Only asset listing or pool admin can call functions marked by this modifier.\\r\\n   */\\r\\n  modifier onlyAssetListingOrPoolAdmins() {\\r\\n    _onlyAssetListingOrPoolAdmins();\\r\\n    _;\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Constructor\\r\\n   * @param provider The address of the new PoolAddressesProvider\\r\\n   * @param assets The addresses of the assets\\r\\n   * @param sources The address of the source of each asset\\r\\n   * @param fallbackOracle The address of the fallback oracle to use if the data of an\\r\\n   *        aggregator is not consistent\\r\\n   * @param baseCurrency The base currency used for the price quotes. If USD is used, base currency is 0x0\\r\\n   * @param baseCurrencyUnit The unit of the base currency\\r\\n   */\\r\\n  constructor(\\r\\n    IPoolAddressesProvider provider,\\r\\n    address[] memory assets,\\r\\n    address[] memory sources,\\r\\n    address fallbackOracle,\\r\\n    address baseCurrency,\\r\\n    uint256 baseCurrencyUnit\\r\\n  ) {\\r\\n    ADDRESSES_PROVIDER = provider;\\r\\n    _setFallbackOracle(fallbackOracle);\\r\\n    _setAssetsSources(assets, sources);\\r\\n    BASE_CURRENCY = baseCurrency;\\r\\n    BASE_CURRENCY_UNIT = baseCurrencyUnit;\\r\\n    emit BaseCurrencySet(baseCurrency, baseCurrencyUnit);\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IProtocolOracle\\r\\n  function setAssetSources(\\r\\n    address[] calldata assets,\\r\\n    address[] calldata sources\\r\\n  ) external override onlyAssetListingOrPoolAdmins {\\r\\n    _setAssetsSources(assets, sources);\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IProtocolOracle\\r\\n  function setFallbackOracle(\\r\\n    address fallbackOracle\\r\\n  ) external override onlyAssetListingOrPoolAdmins {\\r\\n    _setFallbackOracle(fallbackOracle);\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Internal function to set the sources for each asset\\r\\n   * @param assets The addresses of the assets\\r\\n   * @param sources The address of the source of each asset\\r\\n   */\\r\\n  function _setAssetsSources(address[] memory assets, address[] memory sources) internal {\\r\\n    require(assets.length == sources.length, Errors.INCONSISTENT_PARAMS_LENGTH);\\r\\n    for (uint256 i = 0; i < assets.length; i++) {\\r\\n      assetsSources[assets[i]] = AggregatorInterface(sources[i]);\\r\\n      emit AssetSourceUpdated(assets[i], sources[i]);\\r\\n    }\\r\\n  }\\r\\n\\r\\n  /**\\r\\n   * @notice Internal function to set the fallback oracle\\r\\n   * @param fallbackOracle The address of the fallback oracle\\r\\n   */\\r\\n  function _setFallbackOracle(address fallbackOracle) internal {\\r\\n    _fallbackOracle = IPriceOracleGetter(fallbackOracle);\\r\\n    emit FallbackOracleUpdated(fallbackOracle);\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IPriceOracleGetter\\r\\n  function getAssetPrice(address asset) public view override returns (uint256) {\\r\\n    AggregatorInterface source = assetsSources[asset];\\r\\n\\r\\n    if (asset == BASE_CURRENCY) {\\r\\n      return BASE_CURRENCY_UNIT;\\r\\n    } else if (address(source) == address(0)) {\\r\\n      return _fallbackOracle.getAssetPrice(asset);\\r\\n    } else {\\r\\n      int256 price = source.latestAnswer();\\r\\n      if (price > 0) {\\r\\n        return uint256(price);\\r\\n      } else {\\r\\n        return _fallbackOracle.getAssetPrice(asset);\\r\\n      }\\r\\n    }\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IProtocolOracle\\r\\n  function getAssetsPrices(\\r\\n    address[] calldata assets\\r\\n  ) external view override returns (uint256[] memory) {\\r\\n    uint256[] memory prices = new uint256[](assets.length);\\r\\n    for (uint256 i = 0; i < assets.length; i++) {\\r\\n      prices[i] = getAssetPrice(assets[i]);\\r\\n    }\\r\\n    return prices;\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IProtocolOracle\\r\\n  function getSourceOfAsset(address asset) external view override returns (address) {\\r\\n    return address(assetsSources[asset]);\\r\\n  }\\r\\n\\r\\n  /// @inheritdoc IProtocolOracle\\r\\n  function getFallbackOracle() external view returns (address) {\\r\\n    return address(_fallbackOracle);\\r\\n  }\\r\\n\\r\\n  function _onlyAssetListingOrPoolAdmins() internal view {\\r\\n    IACLManager aclManager = IACLManager(ADDRESSES_PROVIDER.getACLManager());\\r\\n    require(\\r\\n      aclManager.isAssetListingAdmin(msg.sender) || aclManager.isPoolAdmin(msg.sender),\\r\\n      Errors.CALLER_NOT_ASSET_LISTING_OR_POOL_ADMIN\\r\\n    );\\r\\n  }\\r\\n}\\r\\n\",\"keccak256\":\"0xabd0dda89d9d467fe2de7d277544946dd2c90f6e993e77cf51183dd77142018b\",\"license\":\"BUSL-1.1\"},\"contracts/protocol/libraries/helpers/Errors.sol\":{\"content\":\"// SPDX-License-Identifier: BUSL-1.1\\r\\npragma solidity ^0.8.0;\\r\\n\\r\\n/**\\r\\n * @title Errors library\\r\\n * @author Aave\\r\\n * @notice Defines the error messages emitted by the different contracts of the Aave protocol\\r\\n */\\r\\nlibrary Errors {\\r\\n  string public constant CALLER_NOT_POOL_ADMIN = '1'; // 'The caller of the function is not a pool admin'\\r\\n  string public constant CALLER_NOT_EMERGENCY_ADMIN = '2'; // 'The caller of the function is not an emergency admin'\\r\\n  string public constant CALLER_NOT_POOL_OR_EMERGENCY_ADMIN = '3'; // 'The caller of the function is not a pool or emergency admin'\\r\\n  string public constant CALLER_NOT_RISK_OR_POOL_ADMIN = '4'; // 'The caller of the function is not a risk or pool admin'\\r\\n  string public constant CALLER_NOT_ASSET_LISTING_OR_POOL_ADMIN = '5'; // 'The caller of the function is not an asset listing or pool admin'\\r\\n  string public constant CALLER_NOT_BRIDGE = '6'; // 'The caller of the function is not a bridge'\\r\\n  string public constant ADDRESSES_PROVIDER_NOT_REGISTERED = '7'; // 'Pool addresses provider is not registered'\\r\\n  string public constant INVALID_ADDRESSES_PROVIDER_ID = '8'; // 'Invalid id for the pool addresses provider'\\r\\n  string public constant NOT_CONTRACT = '9'; // 'Address is not a contract'\\r\\n  string public constant CALLER_NOT_POOL_CONFIGURATOR = '10'; // 'The caller of the function is not the pool configurator'\\r\\n  string public constant CALLER_NOT_BTOKEN = '11'; // 'The caller of the function is not an BToken'\\r\\n  string public constant INVALID_ADDRESSES_PROVIDER = '12'; // 'The address of the pool addresses provider is invalid'\\r\\n  string public constant INVALID_FLASHLOAN_EXECUTOR_RETURN = '13'; // 'Invalid return value of the flashloan executor function'\\r\\n  string public constant RESERVE_ALREADY_ADDED = '14'; // 'Reserve has already been added to reserve list'\\r\\n  string public constant NO_MORE_RESERVES_ALLOWED = '15'; // 'Maximum amount of reserves in the pool reached'\\r\\n  string public constant EMODE_CATEGORY_RESERVED = '16'; // 'Zero eMode category is reserved for volatile heterogeneous assets'\\r\\n  string public constant INVALID_EMODE_CATEGORY_ASSIGNMENT = '17'; // 'Invalid eMode category assignment to asset'\\r\\n  string public constant RESERVE_LIQUIDITY_NOT_ZERO = '18'; // 'The liquidity of the reserve needs to be 0'\\r\\n  string public constant FLASHLOAN_PREMIUM_INVALID = '19'; // 'Invalid flashloan premium'\\r\\n  string public constant INVALID_RESERVE_PARAMS = '20'; // 'Invalid risk parameters for the reserve'\\r\\n  string public constant INVALID_EMODE_CATEGORY_PARAMS = '21'; // 'Invalid risk parameters for the eMode category'\\r\\n  string public constant BRIDGE_PROTOCOL_FEE_INVALID = '22'; // 'Invalid bridge protocol fee'\\r\\n  string public constant CALLER_MUST_BE_POOL = '23'; // 'The caller of this function must be a pool'\\r\\n  string public constant INVALID_MINT_AMOUNT = '24'; // 'Invalid amount to mint'\\r\\n  string public constant INVALID_BURN_AMOUNT = '25'; // 'Invalid amount to burn'\\r\\n  string public constant INVALID_AMOUNT = '26'; // 'Amount must be greater than 0'\\r\\n  string public constant RESERVE_INACTIVE = '27'; // 'Action requires an active reserve'\\r\\n  string public constant RESERVE_FROZEN = '28'; // 'Action cannot be performed because the reserve is frozen'\\r\\n  string public constant RESERVE_PAUSED = '29'; // 'Action cannot be performed because the reserve is paused'\\r\\n  string public constant BORROWING_NOT_ENABLED = '30'; // 'Borrowing is not enabled'\\r\\n  string public constant STABLE_BORROWING_NOT_ENABLED = '31'; // 'Stable borrowing is not enabled'\\r\\n  string public constant NOT_ENOUGH_AVAILABLE_USER_BALANCE = '32'; // 'User cannot withdraw more than the available balance'\\r\\n  string public constant INVALID_INTEREST_RATE_MODE_SELECTED = '33'; // 'Invalid interest rate mode selected'\\r\\n  string public constant COLLATERAL_BALANCE_IS_ZERO = '34'; // 'The collateral balance is 0'\\r\\n  string public constant HEALTH_FACTOR_LOWER_THAN_LIQUIDATION_THRESHOLD = '35'; // 'Health factor is lesser than the liquidation threshold'\\r\\n  string public constant COLLATERAL_CANNOT_COVER_NEW_BORROW = '36'; // 'There is not enough collateral to cover a new borrow'\\r\\n  string public constant COLLATERAL_SAME_AS_BORROWING_CURRENCY = '37'; // 'Collateral is (mostly) the same currency that is being borrowed'\\r\\n  string public constant AMOUNT_BIGGER_THAN_MAX_LOAN_SIZE_STABLE = '38'; // 'The requested amount is greater than the max loan size in stable rate mode'\\r\\n  string public constant NO_DEBT_OF_SELECTED_TYPE = '39'; // 'For repayment of a specific type of debt, the user needs to have debt that type'\\r\\n  string public constant NO_EXPLICIT_AMOUNT_TO_REPAY_ON_BEHALF = '40'; // 'To repay on behalf of a user an explicit amount to repay is needed'\\r\\n  string public constant NO_OUTSTANDING_STABLE_DEBT = '41'; // 'User does not have outstanding stable rate debt on this reserve'\\r\\n  string public constant NO_OUTSTANDING_VARIABLE_DEBT = '42'; // 'User does not have outstanding variable rate debt on this reserve'\\r\\n  string public constant UNDERLYING_BALANCE_ZERO = '43'; // 'The underlying balance needs to be greater than 0'\\r\\n  string public constant INTEREST_RATE_REBALANCE_CONDITIONS_NOT_MET = '44'; // 'Interest rate rebalance conditions were not met'\\r\\n  string public constant HEALTH_FACTOR_NOT_BELOW_THRESHOLD = '45'; // 'Health factor is not below the threshold'\\r\\n  string public constant COLLATERAL_CANNOT_BE_LIQUIDATED = '46'; // 'The collateral chosen cannot be liquidated'\\r\\n  string public constant SPECIFIED_CURRENCY_NOT_BORROWED_BY_USER = '47'; // 'User did not borrow the specified currency'\\r\\n  string public constant INCONSISTENT_FLASHLOAN_PARAMS = '49'; // 'Inconsistent flashloan parameters'\\r\\n  string public constant BORROW_CAP_EXCEEDED = '50'; // 'Borrow cap is exceeded'\\r\\n  string public constant SUPPLY_CAP_EXCEEDED = '51'; // 'Supply cap is exceeded'\\r\\n  string public constant UNBACKED_MINT_CAP_EXCEEDED = '52'; // 'Unbacked mint cap is exceeded'\\r\\n  string public constant DEBT_CEILING_EXCEEDED = '53'; // 'Debt ceiling is exceeded'\\r\\n  string public constant UNDERLYING_CLAIMABLE_RIGHTS_NOT_ZERO = '54'; // 'Claimable rights over underlying not zero (bToken supply or accruedToTreasury)'\\r\\n  string public constant STABLE_DEBT_NOT_ZERO = '55'; // 'Stable debt supply is not zero'\\r\\n  string public constant VARIABLE_DEBT_SUPPLY_NOT_ZERO = '56'; // 'Variable debt supply is not zero'\\r\\n  string public constant LTV_VALIDATION_FAILED = '57'; // 'Ltv validation failed'\\r\\n  string public constant INCONSISTENT_EMODE_CATEGORY = '58'; // 'Inconsistent eMode category'\\r\\n  string public constant PRICE_ORACLE_SENTINEL_CHECK_FAILED = '59'; // 'Price oracle sentinel validation failed'\\r\\n  string public constant ASSET_NOT_BORROWABLE_IN_ISOLATION = '60'; // 'Asset is not borrowable in isolation mode'\\r\\n  string public constant RESERVE_ALREADY_INITIALIZED = '61'; // 'Reserve has already been initialized'\\r\\n  string public constant USER_IN_ISOLATION_MODE_OR_LTV_ZERO = '62'; // 'User is in isolation mode or ltv is zero'\\r\\n  string public constant INVALID_LTV = '63'; // 'Invalid ltv parameter for the reserve'\\r\\n  string public constant INVALID_LIQ_THRESHOLD = '64'; // 'Invalid liquidity threshold parameter for the reserve'\\r\\n  string public constant INVALID_LIQ_BONUS = '65'; // 'Invalid liquidity bonus parameter for the reserve'\\r\\n  string public constant INVALID_DECIMALS = '66'; // 'Invalid decimals parameter of the underlying asset of the reserve'\\r\\n  string public constant INVALID_RESERVE_FACTOR = '67'; // 'Invalid reserve factor parameter for the reserve'\\r\\n  string public constant INVALID_BORROW_CAP = '68'; // 'Invalid borrow cap for the reserve'\\r\\n  string public constant INVALID_SUPPLY_CAP = '69'; // 'Invalid supply cap for the reserve'\\r\\n  string public constant INVALID_LIQUIDATION_PROTOCOL_FEE = '70'; // 'Invalid liquidation protocol fee for the reserve'\\r\\n  string public constant INVALID_EMODE_CATEGORY = '71'; // 'Invalid eMode category for the reserve'\\r\\n  string public constant INVALID_UNBACKED_MINT_CAP = '72'; // 'Invalid unbacked mint cap for the reserve'\\r\\n  string public constant INVALID_DEBT_CEILING = '73'; // 'Invalid debt ceiling for the reserve\\r\\n  string public constant INVALID_RESERVE_INDEX = '74'; // 'Invalid reserve index'\\r\\n  string public constant ACL_ADMIN_CANNOT_BE_ZERO = '75'; // 'ACL admin cannot be set to the zero address'\\r\\n  string public constant INCONSISTENT_PARAMS_LENGTH = '76'; // 'Array parameters that should be equal length are not'\\r\\n  string public constant ZERO_ADDRESS_NOT_VALID = '77'; // 'Zero address not valid'\\r\\n  string public constant INVALID_EXPIRATION = '78'; // 'Invalid expiration'\\r\\n  string public constant INVALID_SIGNATURE = '79'; // 'Invalid signature'\\r\\n  string public constant OPERATION_NOT_SUPPORTED = '80'; // 'Operation not supported'\\r\\n  string public constant DEBT_CEILING_NOT_ZERO = '81'; // 'Debt ceiling is not zero'\\r\\n  string public constant ASSET_NOT_LISTED = '82'; // 'Asset is not listed'\\r\\n  string public constant INVALID_OPTIMAL_USAGE_RATIO = '83'; // 'Invalid optimal usage ratio'\\r\\n  string public constant INVALID_OPTIMAL_STABLE_TO_TOTAL_DEBT_RATIO = '84'; // 'Invalid optimal stable to total debt ratio'\\r\\n  string public constant UNDERLYING_CANNOT_BE_RESCUED = '85'; // 'The underlying asset cannot be rescued'\\r\\n  string public constant ADDRESSES_PROVIDER_ALREADY_ADDED = '86'; // 'Reserve has already been added to reserve list'\\r\\n  string public constant POOL_ADDRESSES_DO_NOT_MATCH = '87'; // 'The token implementation pool address and the pool address provided by the initializing pool do not match'\\r\\n  string public constant STABLE_BORROWING_ENABLED = '88'; // 'Stable borrowing is enabled'\\r\\n  string public constant SILOED_BORROWING_VIOLATION = '89'; // 'User is trying to borrow multiple assets including a siloed one'\\r\\n  string public constant RESERVE_DEBT_NOT_ZERO = '90'; // the total debt of the reserve needs to be 0\\r\\n  string public constant FLASHLOAN_DISABLED = '91'; // FlashLoaning for this asset is disabled\\r\\n}\\r\\n\",\"keccak256\":\"0x553d8e5e86ac2b489c2d2df18a730372881daae5e0cb47566dca8965efc0c134\",\"license\":\"BUSL-1.1\"}},\"version\":1}",
+  "bytecode": "0x60e06040523480156200001157600080fd5b5060405162000fa238038062000fa283398101604081905262000034916200034e565b6001600160a01b0386166080526200004c83620000ab565b620000588585620000f5565b6001600160a01b03821660a081905260c08290526040518281527fe27c4c1372396a3d15a9922f74f9dfc7c72b1ad6d63868470787249c356454c19060200160405180910390a250505050505062000490565b600180546001600160a01b0319166001600160a01b0383169081179091556040517fce7a780d33665b1ea097af5f155e3821b809ecbaa839d3b33aa83ba28168cefb90600090a250565b8051825114604051806040016040528060028152602001611b9b60f11b815250906200013f5760405162461bcd60e51b815260040162000136919062000402565b60405180910390fd5b5060005b82518110156200025b5781818151811062000162576200016262000452565b602002602001015160008085848151811062000182576200018262000452565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b03160217905550818181518110620001e357620001e362000452565b60200260200101516001600160a01b031683828151811062000209576200020962000452565b60200260200101516001600160a01b03167f22c5b7b2d8561d39f7f210b6b326a1aa69f15311163082308ac4877db6339dc160405160405180910390a380620002528162000468565b91505062000143565b505050565b6001600160a01b03811681146200027657600080fd5b50565b634e487b7160e01b600052604160045260246000fd5b80516200029c8162000260565b919050565b600082601f830112620002b357600080fd5b815160206001600160401b0380831115620002d257620002d262000279565b8260051b604051601f19603f83011681018181108482111715620002fa57620002fa62000279565b6040529384528581018301938381019250878511156200031957600080fd5b83870191505b84821015620003435762000333826200028f565b835291830191908301906200031f565b979650505050505050565b60008060008060008060c087890312156200036857600080fd5b8651620003758162000260565b60208801519096506001600160401b03808211156200039357600080fd5b620003a18a838b01620002a1565b96506040890151915080821115620003b857600080fd5b50620003c789828a01620002a1565b9450506060870151620003da8162000260565b6080880151909350620003ed8162000260565b8092505060a087015190509295509295509295565b600060208083528351808285015260005b81811015620004315785810183015185820160400152820162000413565b506000604082860101526040601f19601f8301168501019250505092915050565b634e487b7160e01b600052603260045260246000fd5b6000600182016200048957634e487b7160e01b600052601160045260246000fd5b5060010190565b60805160a05160c051610ace620004d46000396000818161010701526103610152600081816101ae0152610336015260008181609d01526104f90152610ace6000f3fe608060405234801561001057600080fd5b50600436106100935760003560e01c806392bf2be01161006657806392bf2be0146101375780639d23d9f214610163578063abfd531014610183578063b3596f0714610196578063e19f4700146101a957600080fd5b80630542975c14610098578063170aee73146100dc5780636210308c146100f15780638c89b64f14610102575b600080fd5b6100bf7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b6100ef6100ea366004610844565b6101d0565b005b6001546001600160a01b03166100bf565b6101297f000000000000000000000000000000000000000000000000000000000000000081565b6040519081526020016100d3565b6100bf610145366004610844565b6001600160a01b039081166000908152602081905260409020541690565b6101766101713660046108ad565b6101e4565b6040516100d391906108ef565b6100ef610191366004610933565b610299565b6101296101a4366004610844565b610314565b6100bf7f000000000000000000000000000000000000000000000000000000000000000081565b6101d86104f5565b6101e181610696565b50565b606060008267ffffffffffffffff8111156102015761020161099f565b60405190808252806020026020018201604052801561022a578160200160208202803683370190505b50905060005b838110156102915761026285858381811061024d5761024d6109b5565b90506020020160208101906101a49190610844565b828281518110610274576102746109b5565b602090810291909101015280610289816109cb565b915050610230565b509392505050565b6102a16104f5565b61030e848480806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250506040805160208088028281018201909352878252909350879250869182918501908490808284376000920191909152506106e092505050565b50505050565b6001600160a01b038082166000818152602081905260408120549092908116917f0000000000000000000000000000000000000000000000000000000000000000909116900361038657507f000000000000000000000000000000000000000000000000000000000000000092915050565b6001600160a01b0381166104095760015460405163b3596f0760e01b81526001600160a01b0385811660048301529091169063b3596f0790602401602060405180830381865afa1580156103de573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061040291906109f2565b9392505050565b6000816001600160a01b03166350d25bcd6040518163ffffffff1660e01b8152600401602060405180830381865afa158015610449573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061046d91906109f2565b9050600081131561047f579392505050565b60015460405163b3596f0760e01b81526001600160a01b0386811660048301529091169063b3596f0790602401602060405180830381865afa1580156104c9573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104ed91906109f2565b949350505050565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663707cd7166040518163ffffffff1660e01b8152600401602060405180830381865afa158015610555573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105799190610a0b565b604051629f719760e51b81523360048201529091506001600160a01b038216906313ee32e090602401602060405180830381865afa1580156105bf573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105e39190610a28565b806106515750604051637be53ca160e01b81523360048201526001600160a01b03821690637be53ca190602401602060405180830381865afa15801561062d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106519190610a28565b604051806040016040528060018152602001603560f81b815250906106925760405162461bcd60e51b81526004016106899190610a4a565b60405180910390fd5b5050565b600180546001600160a01b0319166001600160a01b0383169081179091556040517fce7a780d33665b1ea097af5f155e3821b809ecbaa839d3b33aa83ba28168cefb90600090a250565b8051825114604051806040016040528060028152602001611b9b60f11b8152509061071e5760405162461bcd60e51b81526004016106899190610a4a565b5060005b825181101561082a5781818151811061073d5761073d6109b5565b602002602001015160008085848151811061075a5761075a6109b5565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106107b8576107b86109b5565b60200260200101516001600160a01b03168382815181106107db576107db6109b5565b60200260200101516001600160a01b03167f22c5b7b2d8561d39f7f210b6b326a1aa69f15311163082308ac4877db6339dc160405160405180910390a380610822816109cb565b915050610722565b505050565b6001600160a01b03811681146101e157600080fd5b60006020828403121561085657600080fd5b81356104028161082f565b60008083601f84011261087357600080fd5b50813567ffffffffffffffff81111561088b57600080fd5b6020830191508360208260051b85010111156108a657600080fd5b9250929050565b600080602083850312156108c057600080fd5b823567ffffffffffffffff8111156108d757600080fd5b6108e385828601610861565b90969095509350505050565b6020808252825182820181905260009190848201906040850190845b818110156109275783518352928401929184019160010161090b565b50909695505050505050565b6000806000806040858703121561094957600080fd5b843567ffffffffffffffff8082111561096157600080fd5b61096d88838901610861565b9096509450602087013591508082111561098657600080fd5b5061099387828801610861565b95989497509550505050565b634e487b7160e01b600052604160045260246000fd5b634e487b7160e01b600052603260045260246000fd5b6000600182016109eb57634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215610a0457600080fd5b5051919050565b600060208284031215610a1d57600080fd5b81516104028161082f565b600060208284031215610a3a57600080fd5b8151801515811461040257600080fd5b600060208083528351808285015260005b81811015610a7757858101830151858201604001528201610a5b565b506000604082860101526040601f19601f830116850101925050509291505056fea26469706673582212207d2157163b2bd80d686e092db0da8b40fe29ec98becb1b1b57f286ea8cba601d64736f6c63430008140033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100935760003560e01c806392bf2be01161006657806392bf2be0146101375780639d23d9f214610163578063abfd531014610183578063b3596f0714610196578063e19f4700146101a957600080fd5b80630542975c14610098578063170aee73146100dc5780636210308c146100f15780638c89b64f14610102575b600080fd5b6100bf7f000000000000000000000000000000000000000000000000000000000000000081565b6040516001600160a01b0390911681526020015b60405180910390f35b6100ef6100ea366004610844565b6101d0565b005b6001546001600160a01b03166100bf565b6101297f000000000000000000000000000000000000000000000000000000000000000081565b6040519081526020016100d3565b6100bf610145366004610844565b6001600160a01b039081166000908152602081905260409020541690565b6101766101713660046108ad565b6101e4565b6040516100d391906108ef565b6100ef610191366004610933565b610299565b6101296101a4366004610844565b610314565b6100bf7f000000000000000000000000000000000000000000000000000000000000000081565b6101d86104f5565b6101e181610696565b50565b606060008267ffffffffffffffff8111156102015761020161099f565b60405190808252806020026020018201604052801561022a578160200160208202803683370190505b50905060005b838110156102915761026285858381811061024d5761024d6109b5565b90506020020160208101906101a49190610844565b828281518110610274576102746109b5565b602090810291909101015280610289816109cb565b915050610230565b509392505050565b6102a16104f5565b61030e848480806020026020016040519081016040528093929190818152602001838360200280828437600092019190915250506040805160208088028281018201909352878252909350879250869182918501908490808284376000920191909152506106e092505050565b50505050565b6001600160a01b038082166000818152602081905260408120549092908116917f0000000000000000000000000000000000000000000000000000000000000000909116900361038657507f000000000000000000000000000000000000000000000000000000000000000092915050565b6001600160a01b0381166104095760015460405163b3596f0760e01b81526001600160a01b0385811660048301529091169063b3596f0790602401602060405180830381865afa1580156103de573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061040291906109f2565b9392505050565b6000816001600160a01b03166350d25bcd6040518163ffffffff1660e01b8152600401602060405180830381865afa158015610449573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061046d91906109f2565b9050600081131561047f579392505050565b60015460405163b3596f0760e01b81526001600160a01b0386811660048301529091169063b3596f0790602401602060405180830381865afa1580156104c9573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906104ed91906109f2565b949350505050565b60007f00000000000000000000000000000000000000000000000000000000000000006001600160a01b031663707cd7166040518163ffffffff1660e01b8152600401602060405180830381865afa158015610555573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105799190610a0b565b604051629f719760e51b81523360048201529091506001600160a01b038216906313ee32e090602401602060405180830381865afa1580156105bf573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906105e39190610a28565b806106515750604051637be53ca160e01b81523360048201526001600160a01b03821690637be53ca190602401602060405180830381865afa15801561062d573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906106519190610a28565b604051806040016040528060018152602001603560f81b815250906106925760405162461bcd60e51b81526004016106899190610a4a565b60405180910390fd5b5050565b600180546001600160a01b0319166001600160a01b0383169081179091556040517fce7a780d33665b1ea097af5f155e3821b809ecbaa839d3b33aa83ba28168cefb90600090a250565b8051825114604051806040016040528060028152602001611b9b60f11b8152509061071e5760405162461bcd60e51b81526004016106899190610a4a565b5060005b825181101561082a5781818151811061073d5761073d6109b5565b602002602001015160008085848151811061075a5761075a6109b5565b60200260200101516001600160a01b03166001600160a01b0316815260200190815260200160002060006101000a8154816001600160a01b0302191690836001600160a01b031602179055508181815181106107b8576107b86109b5565b60200260200101516001600160a01b03168382815181106107db576107db6109b5565b60200260200101516001600160a01b03167f22c5b7b2d8561d39f7f210b6b326a1aa69f15311163082308ac4877db6339dc160405160405180910390a380610822816109cb565b915050610722565b505050565b6001600160a01b03811681146101e157600080fd5b60006020828403121561085657600080fd5b81356104028161082f565b60008083601f84011261087357600080fd5b50813567ffffffffffffffff81111561088b57600080fd5b6020830191508360208260051b85010111156108a657600080fd5b9250929050565b600080602083850312156108c057600080fd5b823567ffffffffffffffff8111156108d757600080fd5b6108e385828601610861565b90969095509350505050565b6020808252825182820181905260009190848201906040850190845b818110156109275783518352928401929184019160010161090b565b50909695505050505050565b6000806000806040858703121561094957600080fd5b843567ffffffffffffffff8082111561096157600080fd5b61096d88838901610861565b9096509450602087013591508082111561098657600080fd5b5061099387828801610861565b95989497509550505050565b634e487b7160e01b600052604160045260246000fd5b634e487b7160e01b600052603260045260246000fd5b6000600182016109eb57634e487b7160e01b600052601160045260246000fd5b5060010190565b600060208284031215610a0457600080fd5b5051919050565b600060208284031215610a1d57600080fd5b81516104028161082f565b600060208284031215610a3a57600080fd5b8151801515811461040257600080fd5b600060208083528351808285015260005b81811015610a7757858101830151858201604001528201610a5b565b506000604082860101526040601f19601f830116850101925050509291505056fea26469706673582212207d2157163b2bd80d686e092db0da8b40fe29ec98becb1b1b57f286ea8cba601d64736f6c63430008140033",
+  "devdoc": {
+    "author": "Aave",
+    "events": {
+      "AssetSourceUpdated(address,address)": {
+        "details": "Emitted after the price source of an asset is updated",
+        "params": {
+          "asset": "The address of the asset",
+          "source": "The price source of the asset"
+        }
+      },
+      "BaseCurrencySet(address,uint256)": {
+        "details": "Emitted after the base currency is set",
+        "params": {
+          "baseCurrency": "The base currency of used for price quotes",
+          "baseCurrencyUnit": "The unit of the base currency"
+        }
+      },
+      "FallbackOracleUpdated(address)": {
+        "details": "Emitted after the address of fallback oracle is updated",
+        "params": {
+          "fallbackOracle": "The address of the fallback oracle"
+        }
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "constructor": {
+        "params": {
+          "assets": "The addresses of the assets",
+          "baseCurrency": "The base currency used for the price quotes. If USD is used, base currency is 0x0",
+          "baseCurrencyUnit": "The unit of the base currency",
+          "fallbackOracle": "The address of the fallback oracle to use if the data of an        aggregator is not consistent",
+          "provider": "The address of the new PoolAddressesProvider",
+          "sources": "The address of the source of each asset"
+        }
+      },
+      "getAssetPrice(address)": {
+        "params": {
+          "asset": "The address of the asset"
+        },
+        "returns": {
+          "_0": "The price of the asset"
+        }
+      },
+      "getAssetsPrices(address[])": {
+        "params": {
+          "assets": "The list of assets addresses"
+        },
+        "returns": {
+          "_0": "The prices of the given assets"
+        }
+      },
+      "getFallbackOracle()": {
+        "returns": {
+          "_0": "The address of the fallback oracle"
+        }
+      },
+      "getSourceOfAsset(address)": {
+        "params": {
+          "asset": "The address of the asset"
+        },
+        "returns": {
+          "_0": "The address of the source"
+        }
+      },
+      "setAssetSources(address[],address[])": {
+        "params": {
+          "assets": "The addresses of the assets",
+          "sources": "The addresses of the price sources"
+        }
+      },
+      "setFallbackOracle(address)": {
+        "params": {
+          "fallbackOracle": "The address of the fallback oracle"
+        }
+      }
+    },
+    "stateVariables": {
+      "ADDRESSES_PROVIDER": {
+        "return": "The address of the PoolAddressesProvider contract",
+        "returns": {
+          "_0": "The address of the PoolAddressesProvider contract"
+        }
+      },
+      "BASE_CURRENCY": {
+        "details": "Address 0x0 is reserved for USD as base currency.",
+        "return": "Returns the base currency address.",
+        "returns": {
+          "_0": "Returns the base currency address."
+        }
+      },
+      "BASE_CURRENCY_UNIT": {
+        "details": "1 ether for ETH, 1e8 for USD.",
+        "return": "Returns the base currency unit.",
+        "returns": {
+          "_0": "Returns the base currency unit."
+        }
+      }
+    },
+    "title": "ProtocolOracle",
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "ADDRESSES_PROVIDER()": {
+        "notice": "Returns the PoolAddressesProvider"
+      },
+      "BASE_CURRENCY()": {
+        "notice": "Returns the base currency address"
+      },
+      "BASE_CURRENCY_UNIT()": {
+        "notice": "Returns the base currency unit"
+      },
+      "constructor": {
+        "notice": "Constructor"
+      },
+      "getAssetPrice(address)": {
+        "notice": "Returns the asset price in the base currency"
+      },
+      "getAssetsPrices(address[])": {
+        "notice": "Returns a list of prices from a list of assets addresses"
+      },
+      "getFallbackOracle()": {
+        "notice": "Returns the address of the fallback oracle"
+      },
+      "getSourceOfAsset(address)": {
+        "notice": "Returns the address of the source for an asset address"
+      },
+      "setAssetSources(address[],address[])": {
+        "notice": "Sets or replaces price sources of assets"
+      },
+      "setFallbackOracle(address)": {
+        "notice": "Sets the fallback oracle"
+      }
+    },
+    "notice": "Contract to get asset prices, manage price sources and update the fallback oracle - Use of Chainlink Aggregators as first source of price - If the returned price by a Chainlink aggregator is <= 0, the call is forwarded to a fallback oracle - Owned by the Aave governance",
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 7862,
+        "contract": "contracts/misc/ProtocolOracle.sol:ProtocolOracle",
+        "label": "assetsSources",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_mapping(t_address,t_contract(AggregatorInterface)47)"
+      },
+      {
+        "astId": 7865,
+        "contract": "contracts/misc/ProtocolOracle.sol:ProtocolOracle",
+        "label": "_fallbackOracle",
+        "offset": 0,
+        "slot": "1",
+        "type": "t_contract(IPriceOracleGetter)5972"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_contract(AggregatorInterface)47": {
+        "encoding": "inplace",
+        "label": "contract AggregatorInterface",
+        "numberOfBytes": "20"
+      },
+      "t_contract(IPriceOracleGetter)5972": {
+        "encoding": "inplace",
+        "label": "contract IPriceOracleGetter",
+        "numberOfBytes": "20"
+      },
+      "t_mapping(t_address,t_contract(AggregatorInterface)47)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => contract AggregatorInterface)",
+        "numberOfBytes": "32",
+        "value": "t_contract(AggregatorInterface)47"
+      }
+    }
+  }
+}

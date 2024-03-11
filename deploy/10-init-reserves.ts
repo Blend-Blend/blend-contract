@@ -1,16 +1,49 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { ethers } from "hardhat";
+import { BigNumberish } from "ethers";
 import hre from "hardhat";
 
-import { ZERO_BYTES_32, ZERO_ADDRESS } from "../utils/constants";
+import { 
+  ZERO_BYTES_32, 
+  ZERO_ADDRESS 
+} from "../utils/constants";
 import { config } from "dotenv";
-import { eNetwork, IBlendConfiguration } from "../utils/types";
+import { 
+  eContractid, 
+  eEthereumNetwork, 
+  eNetwork, 
+  IBlendConfiguration, 
+  IReserveParams, 
+  tEthereumAddress 
+} from "../utils/types";
 import { MARKET_NAME } from "../utils/env";
-import { ConfigNames, getReserveAddresses, getTreasuryAddress, loadPoolConfig, savePoolTokens } from "../utils/market-config-helpers";
-import { getDeployedContractWithDefaultName } from "../utils/env-utils";
-import { configureReservesByHelper, initReservesByHelper } from "../utils/init-helpers";
-import { POOL_DATA_PROVIDER } from "../utils/deploy-ids";
+import { 
+  ConfigNames, 
+  getParamPerNetwork, 
+  getReserveAddresses, 
+  getTreasuryAddress, 
+  loadPoolConfig, 
+  savePoolTokens 
+} from "../utils/market-config-helpers";
+import { getDeployedContract } from "../utils/env-utils";
+import { 
+  ACL_MANAGER_ID,
+  BTOKEN_IMPL_ID, 
+  BTOKEN_PREFIX, 
+  DELEGATION_AWARE_BTOKEN_IMPL_ID, 
+  POOL_ADDRESSES_PROVIDER_ID, 
+  POOL_CONFIGURATOR_IMPL_ID, 
+  POOL_CONFIGURATOR_PROXY_ID, 
+  POOL_DATA_PROVIDER, 
+  RESERVES_SETUP_HELPER_ID, 
+  STABLE_DEBT_PREFIX, 
+  STABLE_DEBT_TOKEN_IMPL_ID, 
+  VARIABLE_DEBT_PREFIX,
+  VARIABLE_DEBT_TOKEN_IMPL_ID
+} from "../utils/deploy-ids";
+import { chunk } from "../utils/utils";
+import Bluebird from "bluebird";
 config({ path: "../.env" });
 
 const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
@@ -24,11 +57,39 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
   
-  const poolConfig = (await loadPoolConfig(
+  const poolConfig = loadPoolConfig(
     MARKET_NAME as ConfigNames
-  )) as IBlendConfiguration;
+  ) as IBlendConfiguration;
   
-  const provider = await getDeployedContractWithDefaultName("PoolAddressesProvider");
+  const provider = await getDeployedContract("PoolAddressesProvider", POOL_ADDRESSES_PROVIDER_ID);
+  const poolDataProvider = await getDeployedContract("PoolDataProvider", POOL_DATA_PROVIDER);
+  
+  const poolProxy = await hre.ethers.getContractAt(
+    "Pool", 
+    await provider.getPool()
+  );
+  const poolConfiguratorProxy = await hre.ethers.getContractAt(
+    "PoolConfigurator", 
+    await provider.getPoolConfigurator()
+  );
+  const  aclManager = await hre.ethers.getContractAt(
+    "ACLManager", 
+    await provider.getACLManager()
+  );
+
+  //Deploy Reserver setup helper
+  await deploy(RESERVES_SETUP_HELPER_ID, {
+    contract: "ReservesSetupHelper",
+    from: deployer,
+    args: [],
+  }).then((res) => {
+    console.log("ReservesSetupHelper deployed to: ", res.address, res.newlyDeployed);
+  });
+  const ReservesSetupHelper = await deployments.get(RESERVES_SETUP_HELPER_ID);
+  const reservesSetupHelper = await ethers.getContractAt(
+    "ReservesSetupHelper",
+    ReservesSetupHelper.address
+  );
 
   const {
     BTokenNamePrefix,
@@ -43,7 +104,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   for (const strategy in RateStrategies) {
     const strategyData = RateStrategies[strategy];
     const args = [
-      provider.address,
+      provider.target,
       strategyData.optimalUsageRatio,
       strategyData.baseVariableBorrowRate,
       strategyData.variableRateSlope1,
@@ -62,39 +123,310 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     });
   }
 
-
   // Deploy Reserves ATokens
   const treasuryAddress = await getTreasuryAddress(poolConfig, network);
-  const incentivesController = await deployments.get("IncentivesProxy");
-  const reservesAddresses = await getReserveAddresses(poolConfig, network);
+  const incentivesController = await deployments.get("RewardsControllerProxy");
+  
+  const reservesAssets = getParamPerNetwork(poolConfig.ReserveAssets, network);
+  if (reservesAssets === undefined) {
+    throw Error("Reserve assets not found");
+  }
+  if (network === eEthereumNetwork.hardhat) {
+    for (const asset in reservesAssets) {
+      if (reservesAssets[asset] === ZERO_ADDRESS) {
+        reservesAssets[asset] = (await deployments.get(asset)).address;
+      }
+    }
+  }
+  
+  const initChunks = 3;
+  let reserveTokens: string[] = [];
+  let reserveInitDecimals: string[] = [];
+  let reserveSymbols: string[] = [];
+  let initInputParams: {
+    bTokenImpl: string;
+    stableDebtTokenImpl: string;
+    variableDebtTokenImpl: string;
+    underlyingAssetDecimals: BigNumberish;
+    interestRateStrategyAddress: string;
+    underlyingAsset: string;
+    treasury: string;
+    incentivesController: string;
+    underlyingAssetName: string;
+    bTokenName: string;
+    bTokenSymbol: string;
+    variableDebtTokenName: string;
+    variableDebtTokenSymbol: string;
+    stableDebtTokenName: string;
+    stableDebtTokenSymbol: string;
+    params: string;
+  }[] = [];
 
-  if (Object.keys(reservesAddresses).length == 0) {
-    console.warn("[WARNING] Skipping initialization. Empty asset list.");
-    return;
+  let strategyAddresses: Record<string, tEthereumAddress> = {};
+  let strategyAddressPerAsset: Record<string, string> = {};
+  let bTokenType: Record<string, string> = {};
+  let delegationAwareATokenImplementationAddress = "";
+  let bTokenImplementationAddress = "";
+  let stableDebtTokenImplementationAddress = "";
+  let variableDebtTokenImplementationAddress = "";
+  
+  stableDebtTokenImplementationAddress = (
+    await hre.deployments.get(STABLE_DEBT_TOKEN_IMPL_ID)
+  ).address;
+  variableDebtTokenImplementationAddress = (
+    await hre.deployments.get(VARIABLE_DEBT_TOKEN_IMPL_ID)
+  ).address;
+  bTokenImplementationAddress = (
+    await hre.deployments.get(BTOKEN_IMPL_ID)
+    ).address;
+
+  const delegatedAwareReserves = Object.entries(ReservesConfig).filter(
+    ([_, { bTokenImpl }]) => bTokenImpl === eContractid.DelegationAwareBToken
+  ) as [string, IReserveParams][];
+
+  if (delegatedAwareReserves.length > 0) {
+    delegationAwareATokenImplementationAddress = (
+      await hre.deployments.get(DELEGATION_AWARE_BTOKEN_IMPL_ID)
+    ).address;
   }
 
-  await initReservesByHelper(
-    ReservesConfig,
-    reservesAddresses,
-    BTokenNamePrefix,
-    StableDebtTokenNamePrefix,
-    VariableDebtTokenNamePrefix,
-    SymbolPrefix,
-    deployer,
-    treasuryAddress,
-    incentivesController.address
+  const reserves = Object.entries(ReservesConfig).filter(
+    ([_, { bTokenImpl }]) =>
+      bTokenImpl === eContractid.DelegationAwareBToken ||
+      bTokenImpl === eContractid.BToken
+  ) as [string, IReserveParams][];
+
+  for (let [symbol, params] of reserves) {
+    let tokenAddress : string;
+    if (hre.network.name === "hardhat") {
+      tokenAddress = (await hre.deployments.get(symbol)).address;
+    } else {
+      tokenAddress = reservesAssets[symbol];
+    }
+
+    const poolReserve = await poolProxy.getReserveData(tokenAddress);
+
+    if (poolReserve.bTokenAddress !== ZERO_ADDRESS) {
+      console.log(`- Skipping init of ${symbol} due is already initialized`);
+      continue;
+    }
+    const { strategy, bTokenImpl, reserveDecimals } = params;
+    if (!strategyAddresses[strategy.name]) {
+      // Strategy does not exist, load it
+      strategyAddresses[strategy.name] = (
+        await hre.deployments.get(`ReserveStrategy-${strategy.name}`)
+      ).address;
+    }
+    strategyAddressPerAsset[symbol] = strategyAddresses[strategy.name];
+    console.log(
+      "Strategy address for asset %s: %s",
+      symbol,
+      strategyAddressPerAsset[symbol]
+    );
+
+    if (bTokenImpl === eContractid.BToken) {
+      bTokenType[symbol] = "generic";
+    } else if (bTokenImpl === eContractid.DelegationAwareBToken) {
+      bTokenType[symbol] = "delegation aware";
+    }
+
+    reserveInitDecimals.push(reserveDecimals);
+    reserveTokens.push(tokenAddress);
+    reserveSymbols.push(symbol);
+  }
+
+  for (let i = 0; i < reserveSymbols.length; i++) {
+    let bTokenToUse: string;
+    if (bTokenType[reserveSymbols[i]] === "generic") {
+      bTokenToUse = bTokenImplementationAddress;
+    } else {
+      bTokenToUse = delegationAwareATokenImplementationAddress;
+    }
+
+    initInputParams.push({
+      bTokenImpl: bTokenToUse,
+      stableDebtTokenImpl: stableDebtTokenImplementationAddress,
+      variableDebtTokenImpl: variableDebtTokenImplementationAddress,
+      underlyingAssetDecimals: reserveInitDecimals[i],
+      interestRateStrategyAddress: strategyAddressPerAsset[reserveSymbols[i]],
+      underlyingAsset: reserveTokens[i],
+      treasury: treasuryAddress,
+      incentivesController: incentivesController.address,
+      underlyingAssetName: reserveSymbols[i],
+      bTokenName: `Blend ${BTokenNamePrefix} ${reserveSymbols[i]}`,
+      bTokenSymbol: `a${SymbolPrefix}${reserveSymbols[i]}`,
+      variableDebtTokenName: `Blend ${VariableDebtTokenNamePrefix} Variable Debt ${reserveSymbols[i]}`,
+      variableDebtTokenSymbol: `variableDebt${SymbolPrefix}${reserveSymbols[i]}`,
+      stableDebtTokenName: `Blend ${StableDebtTokenNamePrefix} Stable Debt ${reserveSymbols[i]}`,
+      stableDebtTokenSymbol: `stableDebt${SymbolPrefix}${reserveSymbols[i]}`,
+      params: "0x10",
+    });
+  }
+
+  // Deploy init reserves per chunks
+  const chunkedSymbols = chunk(reserveSymbols, initChunks);
+  const chunkedInitInputParams = chunk(initInputParams, initChunks);
+  
+  console.log(
+    `- Reserves initialization in ${chunkedInitInputParams.length} txs`
   );
+  for (
+    let chunkIndex = 0;
+    chunkIndex < chunkedInitInputParams.length;
+    chunkIndex++
+  ) {
+    let tx = await poolConfiguratorProxy.initReserves(chunkedInitInputParams[chunkIndex]);
+    await tx.wait().then(() => {
+      console.log(
+        `  - Reserve ready for: ${chunkedSymbols[chunkIndex].join(", ")}`,
+        `\n    - Tx hash: ${tx.hash}`
+      );
+    });
+  }
+
   deployments.log(`[Deployment] Initialized all reserves`);
 
-  await configureReservesByHelper(ReservesConfig, reservesAddresses);
+  // Configure reserves By Helper
+  const tokens: string[] = [];
+  const symbols: string[] = [];
+
+  const inputParams: {
+    asset: string;
+    baseLTV: BigNumberish;
+    liquidationThreshold: BigNumberish;
+    liquidationBonus: BigNumberish;
+    reserveFactor: BigNumberish;
+    borrowCap: BigNumberish;
+    supplyCap: BigNumberish;
+    stableBorrowingEnabled: boolean;
+    borrowingEnabled: boolean;
+    flashLoanEnabled: boolean;
+  }[] = [];
+
+  for (const [
+    assetSymbol,
+    {
+      baseLTVAsCollateral,
+      liquidationBonus,
+      liquidationThreshold,
+      reserveFactor,
+      borrowCap,
+      supplyCap,
+      stableBorrowRateEnabled,
+      borrowingEnabled,
+      flashLoanEnabled,
+    },
+  ] of Object.entries(ReservesConfig) as [string, IReserveParams][]) {
+    if (reservesAssets[assetSymbol] === ZERO_ADDRESS) {
+      console.log(
+        `- Skipping init of ${assetSymbol} due token address is not set at markets config`
+      );
+      continue;
+    }
+    if (baseLTVAsCollateral === "-1") continue;
+
+    const assetAddressIndex = Object.keys(reservesAssets).findIndex(
+      (value) => value === assetSymbol
+    );
+    const [, tokenAddress] = (
+      Object.entries(reservesAssets) as [string, string][]
+    )[assetAddressIndex];
+    const { usageAsCollateralEnabled: alreadyEnabled } =
+      await poolDataProvider.getReserveConfigurationData(tokenAddress);
+
+    if (alreadyEnabled) {
+      console.log(
+        `- Reserve ${assetSymbol} is already enabled as collateral, skipping`
+      );
+      continue;
+    }
+    // Push data
+
+    inputParams.push({
+      asset: tokenAddress,
+      baseLTV: baseLTVAsCollateral,
+      liquidationThreshold,
+      liquidationBonus,
+      reserveFactor,
+      borrowCap,
+      supplyCap,
+      stableBorrowingEnabled: stableBorrowRateEnabled,
+      borrowingEnabled: borrowingEnabled,
+      flashLoanEnabled: flashLoanEnabled,
+    });
+
+    tokens.push(tokenAddress);
+    symbols.push(assetSymbol);
+  }
+  if (tokens.length) {
+    // Set aTokenAndRatesDeployer as temporal admin
+    const aclAdmin = await hre.ethers.getSigner(
+      await provider.getACLAdmin()
+    );
+    
+    await aclManager
+    .connect(aclAdmin)
+    .addRiskAdmin(reservesSetupHelper.target);
+
+    // Deploy init per chunks
+    const enableChunks = 20;
+    const chunkedSymbols = chunk(symbols, enableChunks);
+    const chunkedInputParams = chunk(inputParams, enableChunks);
+    const poolConfiguratorAddress = await provider.getPoolConfigurator();
+
+    console.log(`- Configure reserves in ${chunkedInputParams.length} txs`);
+    for (
+      let chunkIndex = 0;
+      chunkIndex < chunkedInputParams.length;
+      chunkIndex++
+    ) {
+      let tx = await reservesSetupHelper.configureReserves(
+        poolConfiguratorAddress,
+        chunkedInputParams[chunkIndex]
+      );
+      await tx.wait();
+      console.log(
+        `  - Init for: ${chunkedSymbols[chunkIndex].join(", ")}`,
+        `\n    - Tx hash: ${tx.hash}`
+      );
+    }
+    // Remove ReservesSetupHelper from risk admins
+    
+    let tx = await aclManager
+    .connect(aclAdmin)
+    .removeRiskAdmin(reservesSetupHelper.target);
+    await tx.wait();
+    
+  }
 
   // Save AToken and Debt tokens artifacts
-  const dataProvider = await deployments.get(POOL_DATA_PROVIDER);
-  await savePoolTokens(reservesAddresses, dataProvider.address);
+  const bTokenArtifact = await hre.deployments.getExtendedArtifact("BToken");
+  const variableDebtTokenArtifact = await hre.deployments.getExtendedArtifact(
+    "VariableDebtToken"
+  );
+  const stableDebtTokenArtifact = await hre.deployments.getExtendedArtifact(
+    "StableDebtToken"
+  );
+  Bluebird.each(Object.keys(reservesAssets), async (tokenSymbol) => {
+    const { bTokenAddress, variableDebtTokenAddress, stableDebtTokenAddress } =
+    await poolDataProvider.getReserveTokensAddresses(reservesAssets[tokenSymbol]);
+
+    await hre.deployments.save(`${tokenSymbol}${BTOKEN_PREFIX}`, {
+      address: bTokenAddress,
+      ...bTokenArtifact,
+    });
+    await hre.deployments.save(`${tokenSymbol}${VARIABLE_DEBT_PREFIX}`, {
+      address: variableDebtTokenAddress,
+      ...variableDebtTokenArtifact,
+    });
+    await hre.deployments.save(`${tokenSymbol}${STABLE_DEBT_PREFIX}`, {
+      address: stableDebtTokenAddress,
+      ...stableDebtTokenArtifact,
+    });
+  });
 
   deployments.log(`[Deployment] Configured all reserves`);
-  return true;
 };
 export default deployFunction;
 deployFunction.tags = ["init-reserves"];
-deployFunction.dependencies = ["core", "token"];
+deployFunction.dependencies = ["core", "token", "incentives", "treasury"];

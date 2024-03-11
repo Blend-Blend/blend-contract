@@ -28,10 +28,12 @@ type eTenderlyNetwork = "tenderly";
 export enum eBevmNetwork {
   main = "bevm",
   testnet = "bevm-testnet",
+  hardhat = "hardhat",
 }
 export enum eMerlinNetwork {
   main = "merlin",
   testnet = "merlin-testnet",
+  hardhat = "hardhat",
 }
 
 export enum eFantomNetwork {
@@ -130,7 +132,7 @@ export enum eContractid {
   DelegationAwareBToken = "DelegationAwareBToken",
   MockStableDebtToken = "MockStableDebtToken",
   MockVariableDebtToken = "MockVariableDebtToken",
-  ProtocolDataProvider = "ProtocolDataProvider",
+  PoolDataProvider = "PoolDataProvider",
   IERC20Detailed = "IERC20Detailed",
   StableDebtToken = "StableDebtToken",
   VariableDebtToken = "VariableDebtToken",

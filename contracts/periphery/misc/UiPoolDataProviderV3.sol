@@ -9,7 +9,7 @@ import {IBToken} from '../../interfaces/IBToken.sol';
 import {IVariableDebtToken} from '../../interfaces/IVariableDebtToken.sol';
 import {IStableDebtToken} from '../../interfaces/IStableDebtToken.sol';
 import {DefaultReserveInterestRateStrategy} from '../../protocol/pool/DefaultReserveInterestRateStrategy.sol';
-import {ProtocolDataProvider} from '../../misc/ProtocolDataProvider.sol';
+import {PoolDataProvider} from '../../misc/PoolDataProvider.sol';
 import {WadRayMath} from '../../protocol/libraries/math/WadRayMath.sol';
 import {ReserveConfiguration} from '../../protocol/libraries/configuration/ReserveConfiguration.sol';
 import {UserConfiguration} from '../../protocol/libraries/configuration/UserConfiguration.sol';
@@ -54,7 +54,7 @@ contract UiPoolDataProviderV3 is IUiPoolDataProviderV3 {
   {
     IProtocolOracle oracle = IProtocolOracle(provider.getPriceOracle());
     IPool pool = IPool(provider.getPool());
-    ProtocolDataProvider poolDataProvider = ProtocolDataProvider(
+    PoolDataProvider poolDataProvider = PoolDataProvider(
       provider.getPoolDataProvider()
     );
 

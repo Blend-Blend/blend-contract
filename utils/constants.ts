@@ -1,5 +1,6 @@
 import { ethers } from "hardhat";
 import { parseUnits } from "ethers";
+import { eArbitrumNetwork, eAvalancheNetwork, eBaseNetwork, eEthereumNetwork, eFantomNetwork, eHarmonyNetwork, eOptimismNetwork, ePolygonNetwork } from "./types";
 
 export const ZERO_BYTES_32 =
   "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -21,7 +22,7 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 
 export const MOCK_CHAINLINK_AGGREGATORS_PRICES: { [key: string]: string } = {
-  AAVE: parseUnits("300", 8).toString(),
+  BLEND: parseUnits("300", 8).toString(),
   WETH: parseUnits("4000", 8).toString(),
   ETH: parseUnits("4000", 8).toString(),
   DAI: parseUnits("1", 8).toString(),
@@ -46,4 +47,63 @@ export const MOCK_CHAINLINK_AGGREGATORS_PRICES: { [key: string]: string } = {
   JEUR: parseUnits("1.126", 8).toString(),
   DPI: parseUnits("149", 8).toString(),
   CBETH: parseUnits("4000", 8).toString(),
+};
+
+export const ETHEREUM_SHORT_EXECUTOR =
+  "0xEE56e2B3D491590B5b31738cC34d5232F378a8D5";
+
+export const EMPTY_STORAGE_SLOT =
+  "0x0000000000000000000000000000000000000000000000000000000000000000";
+
+export const POOL_ADMIN: Record<string, string> = {
+  [eArbitrumNetwork.arbitrum]: "0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb",
+  [eAvalancheNetwork.avalanche]: "0xa35b76E4935449E33C56aB24b23fcd3246f13470",
+  [eFantomNetwork.main]: "0x39CB97b105173b56b5a2b4b33AD25d6a50E6c949",
+  [eHarmonyNetwork.main]: "0xb2f0C5f37f4beD2cB51C44653cD5D84866BDcd2D",
+  [eOptimismNetwork.main]: "0xE50c8C619d05ff98b22Adf991F17602C774F785c",
+  [ePolygonNetwork.polygon]: "0xdc9A35B16DB4e126cFeDC41322b3a36454B1F772",
+  [eEthereumNetwork.main]: ETHEREUM_SHORT_EXECUTOR,
+  [eBaseNetwork.base]: "0xA9F30e6ED4098e9439B2ac8aEA2d3fc26BcEbb45",
+  [eBaseNetwork.baseGoerli]: "0xA9F30e6ED4098e9439B2ac8aEA2d3fc26BcEbb45",
+  [eEthereumNetwork.tenderly]: ETHEREUM_SHORT_EXECUTOR,
+};
+
+export const EMERGENCY_ADMIN: Record<string, string> = {
+  [eArbitrumNetwork.arbitrum]: "0xbbd9f90699c1FA0D7A65870D241DD1f1217c96Eb",
+  [eAvalancheNetwork.avalanche]: "0xa35b76E4935449E33C56aB24b23fcd3246f13470",
+  [eFantomNetwork.main]: "0x39CB97b105173b56b5a2b4b33AD25d6a50E6c949",
+  [eHarmonyNetwork.main]: "0xb2f0C5f37f4beD2cB51C44653cD5D84866BDcd2D",
+  [eOptimismNetwork.main]: "0xE50c8C619d05ff98b22Adf991F17602C774F785c",
+  [ePolygonNetwork.polygon]: "0x1450F2898D6bA2710C98BE9CAF3041330eD5ae58",
+  [eEthereumNetwork.main]: ETHEREUM_SHORT_EXECUTOR,
+};
+
+export const DEFAULT_NAMED_ACCOUNTS = {
+  deployer: {
+    default: 0,
+  },
+  aclAdmin: {
+    default: 0,
+  },
+  emergencyAdmin: {
+    default: 0,
+  },
+  poolAdmin: {
+    default: 0,
+  },
+  addressesProviderRegistryOwner: {
+    default: 0,
+  },
+  treasuryProxyAdmin: {
+    default: 1,
+  },
+  incentivesProxyAdmin: {
+    default: 1,
+  },
+  incentivesEmissionManager: {
+    default: 0,
+  },
+  incentivesRewardsVault: {
+    default: 0,
+  },
 };
