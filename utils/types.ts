@@ -25,14 +25,15 @@ export type eNetwork =
 
 type eTenderlyNetwork = "tenderly";
 
+
 export enum eBevmNetwork {
   main = "bevm",
-  testnet = "bevm-testnet",
+  testnet = "bevm_testnet",
   hardhat = "hardhat",
 }
 export enum eMerlinNetwork {
   main = "merlin",
-  testnet = "merlin-testnet",
+  testnet = "merlin_testnet",
   hardhat = "hardhat",
 }
 

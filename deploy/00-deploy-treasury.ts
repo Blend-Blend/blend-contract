@@ -57,7 +57,11 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   });
 
   const treasuryImpl = await getDeployedContract("EcosystemReserveV2", TREASURY_IMPL_ID);
-  await treasuryImpl.initialize(ZERO_ADDRESS);
+  try {
+    await treasuryImpl.initialize(ZERO_ADDRESS);
+  } catch (error) {
+    console.error("Error initializing treasury implement:");
+  }
 
   // Initialize proxy
   const treasuryProxy = await getDeployedContract(
@@ -74,11 +78,15 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     [treasuryController.target]
   );
 
-  await treasuryProxy["initialize(address,address,bytes)"](
-    treasuryImpl.target,
-    treasuryOwner,
-    initializePayload
-  );
+  try {
+    await treasuryProxy["initialize(address,address,bytes)"](
+      treasuryImpl.target,
+      treasuryOwner,
+      initializePayload
+    );
+  } catch (error) {
+    console.error("Error initializing treasury proxy:");
+  }
 };
 export default deployFunction;
 deployFunction.tags = ["treasury"];

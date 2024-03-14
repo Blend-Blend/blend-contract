@@ -5,7 +5,7 @@ import { config } from "dotenv";
 import { getBaseURI, getDeployedContract, getDeployedContractWithDefaultName } from "../utils/env-utils";
 import { MOCK_CHAINLINK_AGGREGATORS_PRICES, RESERVE_TOKENS } from "../utils/constants";
 import { ConfigNames, getReserveAddresses, getSymbolsByPrefix, isIncentivesEnabled, loadPoolConfig } from "../utils/market-config-helpers";
-import { eNetwork } from "../utils/types";
+import { eBevmNetwork, eEthereumNetwork, eNetwork } from "../utils/types";
 import { FAUCET_OWNABLE_ID, TESTNET_PRICE_AGGR_PREFIX, TESTNET_REWARD_TOKEN_PREFIX } from "../utils/deploy-ids";
 import Bluebird from "bluebird";
 import { MARKET_NAME } from "../utils/env";
@@ -23,7 +23,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
 
-  if (network != "hardhat") {
+  if (network != eEthereumNetwork.hardhat && network != eBevmNetwork.testnet) {
     console.log(
       "[Deployment] Skipping testnet token setup at production market"
     );

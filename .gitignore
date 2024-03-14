@@ -1,9 +1,12 @@
 node_modules
+package-lock.json
 .env
 
 # Hardhat files
 /cache
 /artifacts
+/build
+/deployments
 
 # TypeChain files
 /typechain
@@ -12,3 +15,8 @@ node_modules
 # solidity-coverage files
 /coverage
 /coverage.json
+
+#graph files
+/generated
+subgraph.yaml
+```

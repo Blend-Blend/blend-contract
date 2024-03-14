@@ -10,6 +10,7 @@ import {
 } from "../utils/constants";
 import { config } from "dotenv";
 import { 
+  eBevmNetwork,
   eContractid, 
   eEthereumNetwork, 
   eNetwork, 
@@ -115,15 +116,16 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
       strategyData.stableRateExcessOffset,
       strategyData.optimalStableToTotalDebtRatio,
     ];
-    await deployments.deploy(`ReserveStrategy-${strategyData.name}`, {
+    await deploy(`ReserveStrategy-${strategyData.name}`, {
+      contract: "DefaultReserveInterestRateStrategy",
       from: deployer,
       args: args,
-      contract: "DefaultReserveInterestRateStrategy",
-      log: true,
+    }).then((res) => {
+      console.log(`ReserveStrategy-${strategyData.name} deployed to: `, res.address, res.newlyDeployed);
     });
   }
 
-  // Deploy Reserves ATokens
+  // Deploy Reserves BTokens
   const treasuryAddress = await getTreasuryAddress(poolConfig, network);
   const incentivesController = await deployments.get("RewardsControllerProxy");
   
@@ -131,7 +133,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   if (reservesAssets === undefined) {
     throw Error("Reserve assets not found");
   }
-  if (network === eEthereumNetwork.hardhat) {
+  if (network === eEthereumNetwork.hardhat || network === eBevmNetwork.testnet) {
     for (const asset in reservesAssets) {
       if (reservesAssets[asset] === ZERO_ADDRESS) {
         reservesAssets[asset] = (await deployments.get(asset)).address;
@@ -165,7 +167,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   let strategyAddresses: Record<string, tEthereumAddress> = {};
   let strategyAddressPerAsset: Record<string, string> = {};
   let bTokenType: Record<string, string> = {};
-  let delegationAwareATokenImplementationAddress = "";
+  let delegationAwareBTokenImplementationAddress = "";
   let bTokenImplementationAddress = "";
   let stableDebtTokenImplementationAddress = "";
   let variableDebtTokenImplementationAddress = "";
@@ -185,7 +187,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   ) as [string, IReserveParams][];
 
   if (delegatedAwareReserves.length > 0) {
-    delegationAwareATokenImplementationAddress = (
+    delegationAwareBTokenImplementationAddress = (
       await hre.deployments.get(DELEGATION_AWARE_BTOKEN_IMPL_ID)
     ).address;
   }
@@ -198,7 +200,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
 
   for (let [symbol, params] of reserves) {
     let tokenAddress : string;
-    if (hre.network.name === "hardhat") {
+    if (network === eEthereumNetwork.hardhat || network === eBevmNetwork.testnet) {
       tokenAddress = (await hre.deployments.get(symbol)).address;
     } else {
       tokenAddress = reservesAssets[symbol];
@@ -240,7 +242,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     if (bTokenType[reserveSymbols[i]] === "generic") {
       bTokenToUse = bTokenImplementationAddress;
     } else {
-      bTokenToUse = delegationAwareATokenImplementationAddress;
+      bTokenToUse = delegationAwareBTokenImplementationAddress;
     }
 
     initInputParams.push({
@@ -359,7 +361,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     symbols.push(assetSymbol);
   }
   if (tokens.length) {
-    // Set aTokenAndRatesDeployer as temporal admin
+    // Set bTokenAndRatesDeployer as temporal admin
     const aclAdmin = await hre.ethers.getSigner(
       await provider.getACLAdmin()
     );
@@ -399,7 +401,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     
   }
 
-  // Save AToken and Debt tokens artifacts
+  // Save BToken and Debt tokens artifacts
   const bTokenArtifact = await hre.deployments.getExtendedArtifact("BToken");
   const variableDebtTokenArtifact = await hre.deployments.getExtendedArtifact(
     "VariableDebtToken"

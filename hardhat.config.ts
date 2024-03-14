@@ -8,7 +8,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.20",
+        version: "0.8.13",
         settings: {
           optimizer: {
             enabled: true,
@@ -22,20 +22,20 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
     },
-    // merlinTestnet: {
-    //   url: `https://testnet-rpc.merlinchain.io`,
-    //   accounts: [process.env.PRIVATE_KEY || ""],
-    // },
-    // goerli: {
-    //   url: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-    //   accounts: [process.env.PRIVATE_KEY || ""],
-    //   gas: 5000000,
-    // },
-    // sepolia: {
-    //   url: "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
-    //   accounts: [process.env.PRIVATE_KEY || ""],
-    //   gas: 5000000,
-    // },
+    bevm_testnet: {
+      url: "https://canary-testnet.bevm.io",
+      accounts: [process.env.PRIVATE_KEY || ""],
+    },
+    goerli: {
+      url: "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+      accounts: [process.env.PRIVATE_KEY || ""],
+      gas: 5000000,
+    },
+    sepolia: {
+      url: "https://sepolia.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+      accounts: [process.env.PRIVATE_KEY || ""],
+      gas: 5000000,
+    },
   },
   namedAccounts: {
     deployer: {

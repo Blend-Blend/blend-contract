@@ -1,5 +1,6 @@
 import hre, { deployments, ethers } from "hardhat";
 import { config } from "dotenv";
+import { eBevmNetwork, eEthereumNetwork } from "./types";
 config({ path: "../.env" });
 
 export const getAddress = (name: string) => {
@@ -35,7 +36,7 @@ export const getMockRWA = (name: string) => {
 };
 
 export const getWethAddress = async () => {
-  if (hre.network.name == "hardhat") {
+  if (hre.network.name === eEthereumNetwork.hardhat || hre.network.name === eBevmNetwork.testnet) {
     return (await deployments.get("WBTC")).address;
   } else {
     return getAddress("wbtc");

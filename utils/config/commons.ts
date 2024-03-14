@@ -77,9 +77,10 @@ export const CommonsConfig: ICommonConfiguration = {
   IncentivesConfig: {
     enabled: {
       [eEthereumNetwork.hardhat]: false,
+      [eBevmNetwork.testnet]: false,
     },
     rewards: {
-      [eArbitrumNetwork.arbitrumTestnet]: {
+      [eBevmNetwork.testnet]: {
         CRV: ZERO_ADDRESS,
         REW: ZERO_ADDRESS,
         BAL: ZERO_ADDRESS,
@@ -105,7 +106,7 @@ export const CommonsConfig: ICommonConfiguration = {
       },
     },
     rewardsOracle: {
-      [eArbitrumNetwork.arbitrumTestnet]: {
+      [eBevmNetwork.testnet]: {
         CRV: ZERO_ADDRESS,
         REW: ZERO_ADDRESS,
         BAL: ZERO_ADDRESS,

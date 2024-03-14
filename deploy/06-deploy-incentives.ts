@@ -26,6 +26,7 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   // );
   const provider = await getDeployedContract("PoolAddressesProvider", POOL_ADDRESSES_PROVIDER_ID);
 
+  let tx;
   // ————————————————deploy EmissionManager ———————————————————————
   await deploy(EMISSION_MANAGER_ID, {
     contract: "EmissionManager",
@@ -52,10 +53,14 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     "RewardsController",
     RewardsController.address
   );
-  let tx = await rewardsController.initialize(ZERO_ADDRESS);
-  await tx.wait().then(() => {
-    console.log("Initialize rewards controller done!");
-  });
+  try {
+    tx = await rewardsController.initialize(ZERO_ADDRESS);
+    await tx.wait().then(() => {
+      console.log("Initialize rewards controller done!");
+    });
+  } catch (e) {
+    console.log("RewardsController already initialized: ");
+  }
 
   const rewardControllerId = ethers.keccak256(ethers.toUtf8Bytes("REWARD_CONTROLLER"));
   const isRewardsProxyPending = (await provider.getAddress(rewardControllerId)) === ZERO_ADDRESS;
@@ -72,10 +77,12 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     address: rewardsProxyAddress,
   });
 
-  tx = await emissionManager.setRewardsController(rewardsProxyAddress);
-  await tx.wait().then(() => {
-    console.log("Set rewards controller to emission manager done!");
-  });
+  if (await emissionManager.getRewardsController() === ZERO_ADDRESS) {
+    tx = await emissionManager.setRewardsController(rewardsProxyAddress);
+    await tx.wait().then(() => {
+      console.log("Set rewards controller to emission manager done!");
+    });
+  }
 
 };
 export default deployFunction;

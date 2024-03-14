@@ -1,12 +1,25 @@
 {
+  "scripts": {
+    "prepare:subgraph": "mustache ./graph/config/bevm-testnet.json ./graph/templates/blend.subgraph.template.yaml > ./subgraph.yaml",
+    "subgraph:codegen": "graph codegen",
+    "subgraph:build": "graph build",
+    "subgraph:deploy:hosted": "graph deploy $SLUG --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token $ACCESS_TOKEN",
+    "deploy:hosted:mainnet-v3": "VERSION=v3 BLOCKCHAIN=v3 NETWORK=mainnet env-cmd npm run prepare:subgraph && SLUG=aave/protocol-v3 env-cmd npm run subgraph:deploy:hosted",
+    "deploy:hosted:goerli-v3": "VERSION=v3 BLOCKCHAIN=v3 NETWORK=goerli env-cmd npm run prepare:subgraph && SLUG=aave/protocol-v3-goerli env-cmd npm run subgraph:deploy:hosted",
+    "deploy:hosted:v3": "npm run deploy:hosted:avalanche-v3 && npm run deploy:hosted:polygon-v3 && npm run deploy:hosted:optimism-v3 && npm run deploy:hosted:fantom-v3 && npm run deploy:hosted:arbitrum-v3 && npm run deploy:hosted:harmony-v3 && npm run deploy:hosted:mainnet-v3 && npm run deploy:hosted:gnosis-v3 && npm run deploy:hosted:bnb-v3 && npm run deploy:hosted:scroll-v3",
+    "deploy:hosted:v3-testnet": "npm run deploy:hosted:goerli-v3 && npm run deploy:hosted:mumbai-v3 && npm run deploy:hosted:fuji-v3 && npm run deploy:hosted:arbitrum-goerli && npm run deploy:hosted:optimism-goerli && npm run deploy:hosted:fantom-testnet"
+  },
   "dependencies": {
     "hardhat": "^2.20.1"
   },
   "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.68.5",
+    "@graphprotocol/graph-ts": "^0.33.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@types/bluebird": "^3.5.42",
     "bluebird": "^3.7.2",
     "dotenv": "^16.4.5",
-    "hardhat-deploy": "^0.12.1"
+    "hardhat-deploy": "^0.12.1",
+    "mustache": "^4.2.0"
   }
 }

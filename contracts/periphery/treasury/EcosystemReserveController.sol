@@ -10,10 +10,10 @@ import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
 contract EcosystemReserveController is Ownable, IEcosystemReserveController {
   /**
    * @notice Constructor.
-   * @param aaveGovShortTimelock The address of the Aave's governance executor, owning this contract
+   * @param GovShortTimelock The address of the Aave's governance executor, owning this contract
    */
-  constructor(address aaveGovShortTimelock) {
-    transferOwnership(aaveGovShortTimelock);
+  constructor(address GovShortTimelock) {
+    transferOwnership(GovShortTimelock);
   }
 
   /// @inheritdoc IEcosystemReserveController

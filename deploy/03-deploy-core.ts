@@ -23,6 +23,8 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     process.env.FORK ? process.env.FORK : hre.network.name
   ) as eNetwork;
 
+  let tx;
+
   // get libraires
   const LiquidationLogic = await deployments.get("LiquidationLogic");
   const SupplyLogic = await deployments.get("SupplyLogic");
@@ -67,10 +69,12 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
     PoolAddressesProvider.address
   );
 
-  let tx = await registry.registerAddressesProvider(PoolAddressesProvider.address, 8080);
-  await tx.wait().then(() => {
-    console.log("Add pool address provider to registry done!");
-  });
+  if ((await registry.getAddressesProviderIdByAddress(PoolAddressesProvider.address)) === BigInt(0)) {
+    tx = await registry.registerAddressesProvider(PoolAddressesProvider.address, 8080);
+    await tx.wait().then(() => {
+      console.log("Add pool address provider to registry done!");
+    });
+  }
 
   // ————————————————deploy pool data provider———————————————————————
   await deploy(POOL_DATA_PROVIDER, {
@@ -82,18 +86,22 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   });
   const PoolDataProvider = await deployments.get(POOL_DATA_PROVIDER);
 
-  tx = await provider.setPoolDataProvider(PoolDataProvider.address);
-  await tx.wait().then(() => {
-    console.log("Add pool data provider to pool address provider done!");
-  });
+  if ((await provider.getPoolDataProvider()) === ZERO_ADDRESS) {
+    tx = await provider.setPoolDataProvider(PoolDataProvider.address);
+    await tx.wait().then(() => {
+      console.log("Add pool data provider to pool address provider done!");
+    });
+  }
 
   // ————————————————deploy acl manager———————————————————————
   // Set ACL admin at AddressesProvider
   const aclAdmin = deployer;  //<<<<<<<<<<<<<<<<
-  tx = await provider.setACLAdmin(aclAdmin);
-  await tx.wait().then(() => {
-    console.log("Set ACL admin done!");
-  });
+  if ((await provider.getACLAdmin()) === ZERO_ADDRESS) {
+    tx = await provider.setACLAdmin(aclAdmin);
+    await tx.wait().then(() => {
+      console.log("Set ACL admin done!");
+    });
+  }
 
   //deploy acl manager contract
   await deploy(ACL_MANAGER_ID, {
@@ -107,21 +115,30 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   const aclManager = await ethers.getContractAt("ACLManager", ACLManager.address);
 
   //Setup ACLManager at pool address provider
-  tx = await provider.setACLManager(ACLManager.address);
-  await tx.wait().then(() => {
-    console.log("Set ACL manager done!");
-  });
+  if ((await provider.getACLManager()) === ZERO_ADDRESS) {
+    tx = await provider.setACLManager(ACLManager.address);
+    await tx.wait().then(() => {
+      console.log("Set ACL manager done!");
+    });
+  }
 
   //Add PoolAdmin to ACLManager contract
   const poolAdmin = deployer;  //<<<<<<<<<<<<<<<<
-  tx = await aclManager.addPoolAdmin(poolAdmin);
-  await tx.wait().then(() => {
-    console.log("Add pool admin to ACL manager done!");
-  });
+  if (!(await aclManager.isPoolAdmin(poolAdmin))) {
+    tx = await aclManager.addPoolAdmin(poolAdmin);
+    await tx.wait().then(() => {
+      console.log("Add pool admin to ACL manager done!");
+    });
+  }
 
   //Add EmergencyAdmin  to ACLManager contract
   const emergencyAdmin = deployer;  //<<<<<<<<<<<<<<<<
-  tx = await aclManager.addEmergencyAdmin(emergencyAdmin);
+  if (!(await aclManager.isEmergencyAdmin(emergencyAdmin))) {
+    tx = await aclManager.addEmergencyAdmin(emergencyAdmin);
+    await tx.wait().then(() => {
+      console.log("Add emergency admin to ACL manager done!");
+    });
+  }
 
   //check ACLManager status
   const isACLAdmin = await aclManager.hasRole(ZERO_BYTES_32, aclAdmin);
@@ -161,10 +178,12 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   const ProtocolOracle = await deployments.get(ORACLE_ID);
   const oracle = await ethers.getContractAt("ProtocolOracle", ProtocolOracle.address);
   
-  tx = await provider.setPriceOracle(ProtocolOracle.address);
-  await tx.wait().then(() => {
-    console.log("Set price oracle done!");
-  });
+  if (await provider.getPriceOracle() === ZERO_ADDRESS) {
+    tx = await provider.setPriceOracle(ProtocolOracle.address);
+    await tx.wait().then(() => {
+      console.log("Set price oracle done!");
+    });
+  }
 
   // ————————————————deploy pool contract implementation———————————————————————
   await deploy(POOL_IMPL_ID, {
@@ -185,7 +204,14 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   });
   const Pool = await deployments.get(POOL_IMPL_ID);
   const pool = await ethers.getContractAt("Pool", Pool.address);
-  tx = await pool.initialize(PoolAddressesProvider.address);
+  try {
+    tx = await pool.initialize(PoolAddressesProvider.address);
+    await tx.wait().then(() => {
+      console.log("Pool initialize done!");
+    });
+  } catch (error) {
+    console.log("Pool initialize error: ");
+  }
 
   // ————————————————deploy pool configurator implementation———————————————————————
   await deploy(POOL_CONFIGURATOR_IMPL_ID, {
@@ -200,7 +226,14 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
   });
   const PoolConfigurator = await deployments.get(POOL_CONFIGURATOR_IMPL_ID);
   const poolConfigurator = await ethers.getContractAt("PoolConfigurator", PoolConfigurator.address);
-  tx = await poolConfigurator.initialize(PoolAddressesProvider.address);
+  try {
+    tx = await poolConfigurator.initialize(PoolAddressesProvider.address);
+    await tx.wait().then(() => {
+      console.log("PoolConfigurator initialize done!");
+    });
+  } catch (error) {
+    console.log("PoolConfigurator initialize error: ");
+  }
 
   // ————————————————init pool———————————————————————
   const isPoolProxyPending = (await provider.getPool()) === ZERO_ADDRESS;
@@ -234,18 +267,24 @@ const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnviro
 
   // ————————————————set flash loan premium———————————————————————
   const poolConfigProxy = await ethers.getContractAt("PoolConfigurator", poolConfiguratorProxyAddress);
-  tx = await poolConfigProxy.updateFlashloanPremiumTotal(
-    poolConfig.FlashLoanPremiums.total
-  );
-  await tx.wait().then(() => {
-    console.log("Set flash loan premium total done!");
-  });
-  tx = await poolConfigProxy.updateFlashloanPremiumToProtocol(
-    poolConfig.FlashLoanPremiums.protocol
-  );
-  await tx.wait().then(() => {
-    console.log("Set flash loan premium protocol done!");
-  });
+  const poolProxy = await ethers.getContractAt("Pool", poolProxyAddress);
+  if ((await poolProxy.FLASHLOAN_PREMIUM_TOTAL()) === BigInt(0)) {
+    tx = await poolConfigProxy.updateFlashloanPremiumTotal(
+      poolConfig.FlashLoanPremiums.total
+    );
+    await tx.wait().then(() => {
+      console.log("Set flash loan premium total done!");
+    });
+  }
+
+  if ((await poolProxy.FLASHLOAN_PREMIUM_TO_PROTOCOL()) === BigInt(0)) {
+    tx = await poolConfigProxy.updateFlashloanPremiumToProtocol(
+      poolConfig.FlashLoanPremiums.protocol
+    );
+    await tx.wait().then(() => {
+      console.log("Set flash loan premium protocol done!");
+    });
+  }
 };
 export default deployFunction;
 deployFunction.tags = ["core"];
