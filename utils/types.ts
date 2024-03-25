@@ -29,7 +29,7 @@ type eTenderlyNetwork = "tenderly";
 export enum eBevmNetwork {
   main = "bevm",
   testnet = "bevm_testnet",
-  hardhat = "hardhat",
+  hardhat = "hardhat"
 }
 export enum eMerlinNetwork {
   main = "merlin",

@@ -10,12 +10,14 @@
     "deploy:hosted:v3-testnet": "npm run deploy:hosted:goerli-v3 && npm run deploy:hosted:mumbai-v3 && npm run deploy:hosted:fuji-v3 && npm run deploy:hosted:arbitrum-goerli && npm run deploy:hosted:optimism-goerli && npm run deploy:hosted:fantom-testnet"
   },
   "dependencies": {
+    "@poanet/solidity-flattener": "^3.0.9",
     "hardhat": "^2.20.1"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.68.5",
     "@graphprotocol/graph-ts": "^0.33.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomiclabs/hardhat-etherscan": "^3.1.8",
     "@types/bluebird": "^3.5.42",
     "bluebird": "^3.7.2",
     "dotenv": "^16.4.5",

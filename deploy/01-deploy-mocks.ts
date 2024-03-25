@@ -11,7 +11,7 @@ import Bluebird from "bluebird";
 import { MARKET_NAME } from "../utils/env";
 config({ path: "../.env" });
 
-const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployFunction: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
   const { deploy } = deployments;
 
@@ -160,27 +160,27 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   }
     
   // Deploy price aggregator
-  await Bluebird.each(symbols, async (symbol) => {
-    const price =
-      symbol === "StkBlend"
-        ? MOCK_CHAINLINK_AGGREGATORS_PRICES["BLEND"]
-        : MOCK_CHAINLINK_AGGREGATORS_PRICES[symbol];
-    if (!price) {
-      throw `[ERROR] Missing mock price for asset ${symbol} at MOCK_CHAINLINK_AGGREGATORS_PRICES constant located at src/constants.ts`;
-    }
+  // await Bluebird.each(symbols, async (symbol) => {
+  //   const price =
+  //     symbol === "StkBlend"
+  //       ? MOCK_CHAINLINK_AGGREGATORS_PRICES["BLEND"]
+  //       : MOCK_CHAINLINK_AGGREGATORS_PRICES[symbol];
+  //   if (!price) {
+  //     throw `[ERROR] Missing mock price for asset ${symbol} at MOCK_CHAINLINK_AGGREGATORS_PRICES constant located at src/constants.ts`;
+  //   }
     
-    let aggregatorSymbol = `${symbol}${TESTNET_PRICE_AGGR_PREFIX}`;
-    await deploy(aggregatorSymbol, {
-      contract: "MockAggregator",
-      from: deployer,
-      args: [price],
-    }).then((res) => {
-      console.log("%s deployed to: %s, %s", aggregatorSymbol, res.address, res.newlyDeployed);
-    });
-  });
+  //   let aggregatorSymbol = `${symbol}${TESTNET_PRICE_AGGR_PREFIX}`;
+  //   await deploy(aggregatorSymbol, {
+  //     contract: "MockAggregator",
+  //     from: deployer,
+  //     args: [price],
+  //   }).then((res) => {
+  //     console.log("%s deployed to: %s, %s", aggregatorSymbol, res.address, res.newlyDeployed);
+  //   });
+  // });
 
 };
 
 //
-export default func;
-func.tags = ["mocks"];
+export default deployFunction;
+deployFunction.tags = ["mocks"];

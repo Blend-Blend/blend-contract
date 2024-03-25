@@ -50,11 +50,26 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      bevm_testnet: "3SGTMB5DR8ZHNSBZUXZRQCB5M3PV6FZYKA"
+    },
+    customChains: [
+      {
+        network: "bevm_testnet",
+        chainId: 1502,
+        urls: {
+          apiURL: "https://canary-testnet.bevm.io",
+          browserURL: "https://scan-canary-testnet.bevm.io/"
+        }
+      }
+    ]
   },
   mocha: {
     timeout: 0,
     bail: true,
+  },
+  sourcify: {
+    enabled: true
   },
 };
 
