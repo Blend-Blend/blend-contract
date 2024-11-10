@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
+import {SafeERC20} from '../../../dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {SafeMath} from '../../../dependencies/openzeppelin/contracts/SafeMath.sol';
 import {PercentageMath} from '../../../protocol/libraries/math/PercentageMath.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
@@ -17,6 +18,7 @@ import {BaseParaSwapAdapter} from './BaseParaSwapAdapter.sol';
 abstract contract BaseParaSwapSellAdapter is BaseParaSwapAdapter {
   using PercentageMath for uint256;
   using SafeMath for uint256;
+  using SafeERC20 for IERC20Detailed;
 
   IParaSwapAugustusRegistry public immutable AUGUSTUS_REGISTRY;
 
@@ -70,8 +72,8 @@ abstract contract BaseParaSwapSellAdapter is BaseParaSwapAdapter {
     uint256 balanceBeforeAssetTo = assetToSwapTo.balanceOf(address(this));
 
     address tokenTransferProxy = augustus.getTokenTransferProxy();
-    assetToSwapFrom.approve(tokenTransferProxy, 0);
-    assetToSwapFrom.approve(tokenTransferProxy, amountToSwap);
+    assetToSwapFrom.safeApprove(tokenTransferProxy, 0);
+    assetToSwapFrom.safeApprove(tokenTransferProxy, amountToSwap);
 
     if (fromAmountOffset != 0) {
       // Ensure 256 bit (32 bytes) fromAmount value is within bounds of the
@@ -95,6 +97,7 @@ abstract contract BaseParaSwapSellAdapter is BaseParaSwapAdapter {
         revert(0, returndatasize())
       }
     }
+    
     require(
       assetToSwapFrom.balanceOf(address(this)) == balanceBeforeAssetFrom - amountToSwap,
       'WRONG_BALANCE_AFTER_SWAP'

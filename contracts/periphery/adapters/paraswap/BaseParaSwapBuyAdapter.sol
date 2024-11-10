@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.10;
 
+import {SafeERC20} from '../../../dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {SafeMath} from '../../../dependencies/openzeppelin/contracts/SafeMath.sol';
 import {PercentageMath} from '../../../protocol/libraries/math/PercentageMath.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
@@ -16,6 +17,7 @@ import {BaseParaSwapAdapter} from './BaseParaSwapAdapter.sol';
 abstract contract BaseParaSwapBuyAdapter is BaseParaSwapAdapter {
   using PercentageMath for uint256;
   using SafeMath for uint256;
+  using SafeERC20 for IERC20Detailed;
 
   IParaSwapAugustusRegistry public immutable AUGUSTUS_REGISTRY;
 
@@ -36,6 +38,7 @@ abstract contract BaseParaSwapBuyAdapter is BaseParaSwapAdapter {
    * @param maxAmountToSwap Max amount to be swapped
    * @param amountToReceive Amount to be received from the swap
    * @return amountSold The amount sold during the swap
+   * @return amountBought The amount bought during the swap
    */
   function _buyOnParaSwap(
     uint256 toAmountOffset,
@@ -44,7 +47,7 @@ abstract contract BaseParaSwapBuyAdapter is BaseParaSwapAdapter {
     IERC20Detailed assetToSwapTo,
     uint256 maxAmountToSwap,
     uint256 amountToReceive
-  ) internal returns (uint256 amountSold) {
+  ) internal returns (uint256 amountSold, uint256 amountBought) {
     (bytes memory buyCalldata, IParaSwapAugustus augustus) = abi.decode(
       paraswapData,
       (bytes, IParaSwapAugustus)
@@ -72,8 +75,7 @@ abstract contract BaseParaSwapBuyAdapter is BaseParaSwapAdapter {
     uint256 balanceBeforeAssetTo = assetToSwapTo.balanceOf(address(this));
 
     address tokenTransferProxy = augustus.getTokenTransferProxy();
-    assetToSwapFrom.approve(tokenTransferProxy, 0);
-    assetToSwapFrom.approve(tokenTransferProxy, maxAmountToSwap);
+    assetToSwapFrom.safeApprove(tokenTransferProxy, maxAmountToSwap);
 
     if (toAmountOffset != 0) {
       // Ensure 256 bit (32 bytes) toAmountOffset value is within bounds of the
@@ -98,12 +100,15 @@ abstract contract BaseParaSwapBuyAdapter is BaseParaSwapAdapter {
       }
     }
 
+    // Reset allowance
+    assetToSwapFrom.safeApprove(tokenTransferProxy, 0);
+
     uint256 balanceAfterAssetFrom = assetToSwapFrom.balanceOf(address(this));
     amountSold = balanceBeforeAssetFrom - balanceAfterAssetFrom;
     require(amountSold <= maxAmountToSwap, 'WRONG_BALANCE_AFTER_SWAP');
-    uint256 amountReceived = assetToSwapTo.balanceOf(address(this)).sub(balanceBeforeAssetTo);
-    require(amountReceived >= amountToReceive, 'INSUFFICIENT_AMOUNT_RECEIVED');
+    amountBought = assetToSwapTo.balanceOf(address(this)).sub(balanceBeforeAssetTo);
+    require(amountBought >= amountToReceive, 'INSUFFICIENT_AMOUNT_RECEIVED');
 
-    emit Bought(address(assetToSwapFrom), address(assetToSwapTo), amountSold, amountReceived);
+    emit Bought(address(assetToSwapFrom), address(assetToSwapTo), amountSold, amountBought);
   }
 }

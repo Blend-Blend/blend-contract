@@ -6,6 +6,7 @@ import {IERC20Detailed} from '../../../dependencies/openzeppelin/contracts/IERC2
 import {IERC20} from '../../../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IERC20WithPermit} from '../../../interfaces/IERC20WithPermit.sol';
 import {IPoolAddressesProvider} from '../../../interfaces/IPoolAddressesProvider.sol';
+import {SafeERC20} from '../../../dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {SafeMath} from '../../../dependencies/openzeppelin/contracts/SafeMath.sol';
 import {BaseParaSwapBuyAdapter} from './BaseParaSwapBuyAdapter.sol';
 import {IParaSwapAugustusRegistry} from './interfaces/IParaSwapAugustusRegistry.sol';
@@ -19,6 +20,7 @@ import {ReentrancyGuard} from '../../dependencies/openzeppelin/ReentrancyGuard.s
  **/
 contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
   using SafeMath for uint256;
+  using SafeERC20 for IERC20;
 
   struct RepayParams {
     address collateralAsset;
@@ -112,7 +114,7 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
     // Pull bTokens from user
     _pullBTokenAndWithdraw(address(collateralAsset), msg.sender, collateralAmount, permitSignature);
     //buy debt asset using collateral asset
-    uint256 amountSold = _buyOnParaSwap(
+    (uint256 amountSold, uint256 amountBought) = _buyOnParaSwap(
       buyAllBalanceOffset,
       paraswapData,
       collateralAsset,
@@ -125,15 +127,23 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
 
     //deposit collateral back in the pool, if left after the swap(buy)
     if (collateralBalanceLeft > 0) {
-      IERC20(collateralAsset).approve(address(POOL), 0);
-      IERC20(collateralAsset).approve(address(POOL), collateralBalanceLeft);
+      IERC20(collateralAsset).safeApprove(address(POOL), 0);
+      IERC20(collateralAsset).safeApprove(address(POOL), collateralBalanceLeft);
       POOL.deposit(address(collateralAsset), collateralBalanceLeft, msg.sender, 0);
     }
 
     // Repay debt. Approves 0 first to comply with tokens that implement the anti frontrunning approval fix
-    IERC20(debtAsset).approve(address(POOL), 0);
-    IERC20(debtAsset).approve(address(POOL), debtRepayAmount);
+    IERC20(debtAsset).safeApprove(address(POOL), 0);
+    IERC20(debtAsset).safeApprove(address(POOL), debtRepayAmount);
     POOL.repay(address(debtAsset), debtRepayAmount, debtRateMode, msg.sender);
+  
+    {
+      //transfer excess of debtAsset back to the user, if any
+      uint256 debtAssetExcess = amountBought - debtRepayAmount;
+      if (debtAssetExcess > 0) {
+        IERC20(debtAsset).safeTransfer(msg.sender, debtAssetExcess);
+      }
+    }
   }
 
   /**
@@ -168,7 +178,7 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
       initiator
     );
 
-    uint256 amountSold = _buyOnParaSwap(
+    (uint256 amountSold, uint256 amountBought) = _buyOnParaSwap(
       buyAllBalanceOffset,
       paraswapData,
       collateralAsset,
@@ -178,8 +188,8 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
     );
 
     // Repay debt. Approves for 0 first to comply with tokens that implement the anti frontrunning approval fix.
-    IERC20(debtAsset).approve(address(POOL), 0);
-    IERC20(debtAsset).approve(address(POOL), debtRepayAmount);
+    IERC20(debtAsset).safeApprove(address(POOL), 0);
+    IERC20(debtAsset).safeApprove(address(POOL), debtRepayAmount);
     POOL.repay(address(debtAsset), debtRepayAmount, rateMode, initiator);
 
     uint256 neededForFlashLoanRepay = amountSold.add(premium);
@@ -192,9 +202,17 @@ contract ParaSwapRepayAdapter is BaseParaSwapBuyAdapter, ReentrancyGuard {
       permitSignature
     );
 
+    {
+      //transfer excess of debtAsset back to the user, if any
+      uint256 debtAssetExcess = amountBought - debtRepayAmount;
+      if (debtAssetExcess > 0) {
+        IERC20(debtAsset).safeTransfer(initiator, debtAssetExcess);
+      }
+    }
+  
     // Repay flashloan. Approves for 0 first to comply with tokens that implement the anti frontrunning approval fix.
-    IERC20(collateralAsset).approve(address(POOL), 0);
-    IERC20(collateralAsset).approve(address(POOL), collateralAmount.add(premium));
+    IERC20(collateralAsset).safeApprove(address(POOL), 0);
+    IERC20(collateralAsset).safeApprove(address(POOL), collateralAmount.add(premium));
   }
 
   function getDebtRepayAmount(
