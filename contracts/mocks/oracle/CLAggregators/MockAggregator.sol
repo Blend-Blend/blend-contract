@@ -11,12 +11,21 @@ contract MockAggregator {
     emit AnswerUpdated(initialAnswer, 0, block.timestamp);
   }
 
+  function setLatestAnswer(int256 newAnswer) external {
+    _latestAnswer = newAnswer;
+    emit AnswerUpdated(newAnswer, 0, block.timestamp);
+  }
+
   function latestAnswer() external view returns (int256) {
     return _latestAnswer;
   }
 
   function getTokenType() external pure returns (uint256) {
     return 1;
+  }
+
+  function aggregator() external view returns (address) {
+    return address(this);
   }
 
   function decimals() external pure returns (uint8) {

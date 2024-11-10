@@ -5,6 +5,18 @@ import {WETH9} from "../../dependencies/weth/WETH9.sol";
 import {Ownable} from "../../dependencies/openzeppelin/contracts/Ownable.sol";
 
 contract WETH9Mock is WETH9, Ownable {
+    bool internal _protected;
+
+    /**
+     * @dev Function modifier, if _protected is enabled then msg.sender is required to be the owner
+     */
+    modifier onlyOwnerIfProtected() {
+        if (_protected == true) {
+            require(owner() == _msgSender(), 'Ownable: caller is not the owner');
+        }
+        _;
+    }
+
     constructor(
         string memory mockName,
         string memory mockSymbol,
@@ -14,15 +26,23 @@ contract WETH9Mock is WETH9, Ownable {
         symbol = mockSymbol;
 
         transferOwnership(owner);
+        _protected = true;
     }
 
     function mint(address account, uint256 value)
         public
-        onlyOwner
+        onlyOwnerIfProtected
         returns (bool)
     {
         balanceOf[account] += value;
         emit Transfer(address(0), account, value);
         return true;
+    }
+
+    function setProtected(bool state) public onlyOwner {
+        _protected = state;
+    }
+    function isProtected() public view returns (bool) {
+        return _protected;
     }
 }
