@@ -28,7 +28,7 @@ contract ParaSwapWithdrawSwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuard
   }
   /**
    * @dev Swaps an amount of an asset to another after a withdraw and transfers the new asset to the user.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset and perform the swap.
+   * The user should give this contract allowance to pull the BTokens in order to withdraw the underlying asset and perform the swap.
    * @param assetToSwapFrom Address of the underlying asset to be swapped from
    * @param assetToSwapTo Address of the underlying asset to be swapped to
    * @param amountToSwap Amount to be swapped, or maximum amount when swapping all balance
@@ -48,17 +48,17 @@ contract ParaSwapWithdrawSwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuard
     IParaSwapAugustus augustus,
     PermitSignature calldata permitParams
   ) external nonReentrant {
-    IERC20WithPermit aToken = IERC20WithPermit(
-      _getReserveData(address(assetToSwapFrom)).aTokenAddress
+    IERC20WithPermit bToken = IERC20WithPermit(
+      _getReserveData(address(assetToSwapFrom)).bTokenAddress
     );
     if (swapAllBalanceOffset != 0) {
-      uint256 balance = aToken.balanceOf(msg.sender);
+      uint256 balance = bToken.balanceOf(msg.sender);
       require(balance <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
       amountToSwap = balance;
     }
-    _pullATokenAndWithdraw(
+    _pullBTokenAndWithdraw(
       address(assetToSwapFrom),
-      aToken,
+      bToken,
       msg.sender,
       amountToSwap,
       permitParams
